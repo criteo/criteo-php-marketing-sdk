@@ -1,0 +1,7 @@
+composer.phar
+composer.lock
+/vendor/
+.idea/**
+*.iws
+out/
+.idea_modules/

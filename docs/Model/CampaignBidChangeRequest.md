@@ -1,0 +1,13 @@
+# # CampaignBidChangeRequest
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**campaign_id** | **int** |  | [optional] 
+**bid_value** | **double** |  | [optional] 
+**categories** | [**\Criteo\Marketing\Model\CategoryBidChangeRequest[]**](CategoryBidChangeRequest.md) |  | [optional] 
+
+[[Back to Model list]](../../README.md#documentation-for-models) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to README]](../../README.md)
+
+
