@@ -1,15 +1,14 @@
 language: php
-
 php:
-  - 7.1
-  - 7.3
-
+- 7.1
+- 7.3
 install:
-  - composer install
-
+- composer install
 script:
-  - "vendor/bin/phpunit"
-
+- vendor/bin/phpunit
 branches:
   only:
-    - master
+  - master
+notifications:
+  slack:
+    secure: m4/nW8/7gBvT3avJWaNqs1WxN2diAm3LgZpLBwxKQXMiCSHn+ffcd8uLqlA/sy1wyHyTAXs04AqDlj/jriWSrEFsFdLg+n0dSoiO/CiWswgHB/e4asnGiTDHD6AOzvOiaY3wSr0AbZBidHBa/8I2l+WdYzdSN4VvM7Knv8G927rHtz31uHlEVxCOvqccITlfWnKKudoINwbpKr1gbKFSK2wWFBmlvov5/ffOeJcQP9gfqNM/CMgQC9AmnxobqZe/gOg/tbrCCUv5lqQnW9D1eqHbf3VZHTbA6X6pGSIjV9qbtrvuE3po/2vxz6iRHniYBSeJjZEmGV6CQ2SDAglLyv9nEGjbMG+t/byldmwnQ8lwk9FRnPSVyXBs60Oh8b/yVVOs/7HXUESVFc35vsFc5K8c+0o5k07jEwV+/GP39DWmpgw6wb9lXhgeoZerkth2+JlFA5fZx0V6g3u4Pg3upx2dhaBZoGdq0JEp3sph2HtK/CIOq95tqQgISk0zJjJ1gGN/w8clwj2AW7m6yy8fxvgBS6e843ysvjgeVyqGV10tdclsxq1meWQvPoYCh52TTau2leYygsXvCh5e/aCGAvbSkqVbRIDwUEC5irITIa54+pyjvMn9PDqrr44Ji2J13XvnELEz4BNnGQxHdM9Fo6ncmBbbgG2CZT+/eCEVAmY=
