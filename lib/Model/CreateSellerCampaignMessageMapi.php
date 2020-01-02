@@ -1,6 +1,6 @@
 <?php
 /**
- * AdvertiserCampaignMessage
+ * CreateSellerCampaignMessageMapi
  *
  * PHP version 5
  *
@@ -33,14 +33,14 @@ use \ArrayAccess;
 use \Criteo\Marketing\ObjectSerializer;
 
 /**
- * AdvertiserCampaignMessage Class Doc Comment
+ * CreateSellerCampaignMessageMapi Class Doc Comment
  *
  * @category Class
  * @package  Criteo\Marketing
  * @author   OpenAPI Generator team
  * @link     https://openapi-generator.tech
  */
-class AdvertiserCampaignMessage implements ModelInterface, ArrayAccess
+class CreateSellerCampaignMessageMapi implements ModelInterface, ArrayAccess
 {
     const DISCRIMINATOR = null;
 
@@ -49,7 +49,7 @@ class AdvertiserCampaignMessage implements ModelInterface, ArrayAccess
       *
       * @var string
       */
-    protected static $openAPIModelName = 'AdvertiserCampaignMessage';
+    protected static $openAPIModelName = 'CreateSellerCampaignMessageMapi';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -57,10 +57,8 @@ class AdvertiserCampaignMessage implements ModelInterface, ArrayAccess
       * @var string[]
       */
     protected static $openAPITypes = [
-        'id' => 'int',
-        'campaign_name' => 'string',
-        'campaign_status' => 'string',
-        'status' => 'string'
+        'campaign_id' => 'int',
+        'bid' => 'double'
     ];
 
     /**
@@ -69,10 +67,8 @@ class AdvertiserCampaignMessage implements ModelInterface, ArrayAccess
       * @var string[]
       */
     protected static $openAPIFormats = [
-        'id' => 'int32',
-        'campaign_name' => null,
-        'campaign_status' => null,
-        'status' => null
+        'campaign_id' => 'int32',
+        'bid' => 'double'
     ];
 
     /**
@@ -102,10 +98,8 @@ class AdvertiserCampaignMessage implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
-        'id' => 'id',
-        'campaign_name' => 'campaignName',
-        'campaign_status' => 'campaignStatus',
-        'status' => 'status'
+        'campaign_id' => 'campaignId',
+        'bid' => 'bid'
     ];
 
     /**
@@ -114,10 +108,8 @@ class AdvertiserCampaignMessage implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $setters = [
-        'id' => 'setId',
-        'campaign_name' => 'setCampaignName',
-        'campaign_status' => 'setCampaignStatus',
-        'status' => 'setStatus'
+        'campaign_id' => 'setCampaignId',
+        'bid' => 'setBid'
     ];
 
     /**
@@ -126,10 +118,8 @@ class AdvertiserCampaignMessage implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $getters = [
-        'id' => 'getId',
-        'campaign_name' => 'getCampaignName',
-        'campaign_status' => 'getCampaignStatus',
-        'status' => 'getStatus'
+        'campaign_id' => 'getCampaignId',
+        'bid' => 'getBid'
     ];
 
     /**
@@ -173,25 +163,8 @@ class AdvertiserCampaignMessage implements ModelInterface, ArrayAccess
         return self::$openAPIModelName;
     }
 
-    const STATUS_RUNNING = 'Running';
-    const STATUS_ARCHIVED = 'Archived';
-    const STATUS_NOT_RUNNING = 'NotRunning';
     
 
-    
-    /**
-     * Gets allowable values of the enum
-     *
-     * @return string[]
-     */
-    public function getStatusAllowableValues()
-    {
-        return [
-            self::STATUS_RUNNING,
-            self::STATUS_ARCHIVED,
-            self::STATUS_NOT_RUNNING,
-        ];
-    }
     
 
     /**
@@ -209,10 +182,8 @@ class AdvertiserCampaignMessage implements ModelInterface, ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
-        $this->container['campaign_name'] = isset($data['campaign_name']) ? $data['campaign_name'] : null;
-        $this->container['campaign_status'] = isset($data['campaign_status']) ? $data['campaign_status'] : null;
-        $this->container['status'] = isset($data['status']) ? $data['status'] : null;
+        $this->container['campaign_id'] = isset($data['campaign_id']) ? $data['campaign_id'] : null;
+        $this->container['bid'] = isset($data['bid']) ? $data['bid'] : null;
     }
 
     /**
@@ -223,14 +194,6 @@ class AdvertiserCampaignMessage implements ModelInterface, ArrayAccess
     public function listInvalidProperties()
     {
         $invalidProperties = [];
-
-        $allowedValues = $this->getStatusAllowableValues();
-        if (!is_null($this->container['status']) && !in_array($this->container['status'], $allowedValues, true)) {
-            $invalidProperties[] = sprintf(
-                "invalid value for 'status', must be one of '%s'",
-                implode("', '", $allowedValues)
-            );
-        }
 
         return $invalidProperties;
     }
@@ -248,106 +211,49 @@ class AdvertiserCampaignMessage implements ModelInterface, ArrayAccess
 
 
     /**
-     * Gets id
+     * Gets campaign_id
      *
      * @return int|null
      */
-    public function getId()
+    public function getCampaignId()
     {
-        return $this->container['id'];
+        return $this->container['campaign_id'];
     }
 
     /**
-     * Sets id
+     * Sets campaign_id
      *
-     * @param int|null $id id
+     * @param int|null $campaign_id campaign_id
      *
      * @return $this
      */
-    public function setId($id)
+    public function setCampaignId($campaign_id)
     {
-        $this->container['id'] = $id;
+        $this->container['campaign_id'] = $campaign_id;
 
         return $this;
     }
 
     /**
-     * Gets campaign_name
+     * Gets bid
      *
-     * @return string|null
+     * @return double|null
      */
-    public function getCampaignName()
+    public function getBid()
     {
-        return $this->container['campaign_name'];
+        return $this->container['bid'];
     }
 
     /**
-     * Sets campaign_name
+     * Sets bid
      *
-     * @param string|null $campaign_name campaign_name
+     * @param double|null $bid bid
      *
      * @return $this
      */
-    public function setCampaignName($campaign_name)
+    public function setBid($bid)
     {
-        $this->container['campaign_name'] = $campaign_name;
-
-        return $this;
-    }
-
-    /**
-     * Gets campaign_status
-     *
-     * @return string|null
-     */
-    public function getCampaignStatus()
-    {
-        return $this->container['campaign_status'];
-    }
-
-    /**
-     * Sets campaign_status
-     *
-     * @param string|null $campaign_status campaign_status
-     *
-     * @return $this
-     */
-    public function setCampaignStatus($campaign_status)
-    {
-        $this->container['campaign_status'] = $campaign_status;
-
-        return $this;
-    }
-
-    /**
-     * Gets status
-     *
-     * @return string|null
-     */
-    public function getStatus()
-    {
-        return $this->container['status'];
-    }
-
-    /**
-     * Sets status
-     *
-     * @param string|null $status status
-     *
-     * @return $this
-     */
-    public function setStatus($status)
-    {
-        $allowedValues = $this->getStatusAllowableValues();
-        if (!is_null($status) && !in_array($status, $allowedValues, true)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    "Invalid value for 'status', must be one of '%s'",
-                    implode("', '", $allowedValues)
-                )
-            );
-        }
-        $this->container['status'] = $status;
+        $this->container['bid'] = $bid;
 
         return $this;
     }
