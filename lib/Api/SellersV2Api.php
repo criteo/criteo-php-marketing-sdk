@@ -403,6 +403,618 @@ class SellersV2Api
     }
 
     /**
+     * Operation createSellerCampaignsBySeller
+     *
+     * Create a SellerCampaign
+     *
+     * @param  string $seller_id Supply a generated Id of an existing Seller (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  \Criteo\Marketing\Model\CreateSellerCampaignMessageMapi $seller_campaign Supply the campaign Id and bid to create the mapping (required)
+     *
+     * @throws \Criteo\Marketing\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return \Criteo\Marketing\Model\SellerCampaignMessage
+     */
+    public function createSellerCampaignsBySeller($seller_id, $authorization, $seller_campaign)
+    {
+        list($response) = $this->createSellerCampaignsBySellerWithHttpInfo($seller_id, $authorization, $seller_campaign);
+        return $response;
+    }
+
+    /**
+     * Operation createSellerCampaignsBySellerWithHttpInfo
+     *
+     * Create a SellerCampaign
+     *
+     * @param  string $seller_id Supply a generated Id of an existing Seller (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  \Criteo\Marketing\Model\CreateSellerCampaignMessageMapi $seller_campaign Supply the campaign Id and bid to create the mapping (required)
+     *
+     * @throws \Criteo\Marketing\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of \Criteo\Marketing\Model\SellerCampaignMessage, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function createSellerCampaignsBySellerWithHttpInfo($seller_id, $authorization, $seller_campaign)
+    {
+        $request = $this->createSellerCampaignsBySellerRequest($seller_id, $authorization, $seller_campaign);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            $responseBody = $response->getBody();
+            switch($statusCode) {
+                case 200:
+                    if ('\Criteo\Marketing\Model\SellerCampaignMessage' === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\Criteo\Marketing\Model\SellerCampaignMessage', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+            }
+
+            $returnType = '\Criteo\Marketing\Model\SellerCampaignMessage';
+            $responseBody = $response->getBody();
+            if ($returnType === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = $responseBody->getContents();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders()
+            ];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Criteo\Marketing\Model\SellerCampaignMessage',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation createSellerCampaignsBySellerAsync
+     *
+     * Create a SellerCampaign
+     *
+     * @param  string $seller_id Supply a generated Id of an existing Seller (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  \Criteo\Marketing\Model\CreateSellerCampaignMessageMapi $seller_campaign Supply the campaign Id and bid to create the mapping (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function createSellerCampaignsBySellerAsync($seller_id, $authorization, $seller_campaign)
+    {
+        return $this->createSellerCampaignsBySellerAsyncWithHttpInfo($seller_id, $authorization, $seller_campaign)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation createSellerCampaignsBySellerAsyncWithHttpInfo
+     *
+     * Create a SellerCampaign
+     *
+     * @param  string $seller_id Supply a generated Id of an existing Seller (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  \Criteo\Marketing\Model\CreateSellerCampaignMessageMapi $seller_campaign Supply the campaign Id and bid to create the mapping (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function createSellerCampaignsBySellerAsyncWithHttpInfo($seller_id, $authorization, $seller_campaign)
+    {
+        $returnType = '\Criteo\Marketing\Model\SellerCampaignMessage';
+        $request = $this->createSellerCampaignsBySellerRequest($seller_id, $authorization, $seller_campaign);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    $responseBody = $response->getBody();
+                    if ($returnType === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'createSellerCampaignsBySeller'
+     *
+     * @param  string $seller_id Supply a generated Id of an existing Seller (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  \Criteo\Marketing\Model\CreateSellerCampaignMessageMapi $seller_campaign Supply the campaign Id and bid to create the mapping (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function createSellerCampaignsBySellerRequest($seller_id, $authorization, $seller_campaign)
+    {
+        // verify the required parameter 'seller_id' is set
+        if ($seller_id === null || (is_array($seller_id) && count($seller_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $seller_id when calling createSellerCampaignsBySeller'
+            );
+        }
+        // verify the required parameter 'authorization' is set
+        if ($authorization === null || (is_array($authorization) && count($authorization) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $authorization when calling createSellerCampaignsBySeller'
+            );
+        }
+        // verify the required parameter 'seller_campaign' is set
+        if ($seller_campaign === null || (is_array($seller_campaign) && count($seller_campaign) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $seller_campaign when calling createSellerCampaignsBySeller'
+            );
+        }
+
+        $resourcePath = '/v2/crp/sellers/{sellerId}/seller-campaigns';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // header params
+        if ($authorization !== null) {
+            $headerParams['Authorization'] = ObjectSerializer::toHeaderValue($authorization);
+        }
+
+        // path params
+        if ($seller_id !== null) {
+            $resourcePath = str_replace(
+                '{' . 'sellerId' . '}',
+                ObjectSerializer::toPathValue($seller_id),
+                $resourcePath
+            );
+        }
+
+        // body params
+        $_tempBody = null;
+        if (isset($seller_campaign)) {
+            $_tempBody = $seller_campaign;
+        }
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json', 'text/json', 'text/html']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json', 'text/json', 'text/html'],
+                ['application/json', 'text/json', 'application/xml', 'text/xml', 'application/x-www-form-urlencoded', 'text/html']
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            // $_tempBody is the method argument, if present
+            if ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
+            } else {
+                $httpBody = $_tempBody;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+            }
+        }
+
+        // this endpoint requires API key authentication
+        $apiKey = $this->config->getApiKeyWithPrefix('Authorization');
+        if ($apiKey !== null) {
+            $headers['Authorization'] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation createSellers
+     *
+     * Create new sellers for an advertiser
+     *
+     * @param  int $advertiser_id advertiser_id (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  string[] $seller_names seller_names (required)
+     *
+     * @throws \Criteo\Marketing\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return \Criteo\Marketing\Model\SellerBase[]
+     */
+    public function createSellers($advertiser_id, $authorization, $seller_names)
+    {
+        list($response) = $this->createSellersWithHttpInfo($advertiser_id, $authorization, $seller_names);
+        return $response;
+    }
+
+    /**
+     * Operation createSellersWithHttpInfo
+     *
+     * Create new sellers for an advertiser
+     *
+     * @param  int $advertiser_id (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  string[] $seller_names (required)
+     *
+     * @throws \Criteo\Marketing\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of \Criteo\Marketing\Model\SellerBase[], HTTP status code, HTTP response headers (array of strings)
+     */
+    public function createSellersWithHttpInfo($advertiser_id, $authorization, $seller_names)
+    {
+        $request = $this->createSellersRequest($advertiser_id, $authorization, $seller_names);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            $responseBody = $response->getBody();
+            switch($statusCode) {
+                case 200:
+                    if ('\Criteo\Marketing\Model\SellerBase[]' === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\Criteo\Marketing\Model\SellerBase[]', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+            }
+
+            $returnType = '\Criteo\Marketing\Model\SellerBase[]';
+            $responseBody = $response->getBody();
+            if ($returnType === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = $responseBody->getContents();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders()
+            ];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Criteo\Marketing\Model\SellerBase[]',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation createSellersAsync
+     *
+     * Create new sellers for an advertiser
+     *
+     * @param  int $advertiser_id (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  string[] $seller_names (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function createSellersAsync($advertiser_id, $authorization, $seller_names)
+    {
+        return $this->createSellersAsyncWithHttpInfo($advertiser_id, $authorization, $seller_names)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation createSellersAsyncWithHttpInfo
+     *
+     * Create new sellers for an advertiser
+     *
+     * @param  int $advertiser_id (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  string[] $seller_names (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function createSellersAsyncWithHttpInfo($advertiser_id, $authorization, $seller_names)
+    {
+        $returnType = '\Criteo\Marketing\Model\SellerBase[]';
+        $request = $this->createSellersRequest($advertiser_id, $authorization, $seller_names);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    $responseBody = $response->getBody();
+                    if ($returnType === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'createSellers'
+     *
+     * @param  int $advertiser_id (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  string[] $seller_names (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function createSellersRequest($advertiser_id, $authorization, $seller_names)
+    {
+        // verify the required parameter 'advertiser_id' is set
+        if ($advertiser_id === null || (is_array($advertiser_id) && count($advertiser_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $advertiser_id when calling createSellers'
+            );
+        }
+        // verify the required parameter 'authorization' is set
+        if ($authorization === null || (is_array($authorization) && count($authorization) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $authorization when calling createSellers'
+            );
+        }
+        // verify the required parameter 'seller_names' is set
+        if ($seller_names === null || (is_array($seller_names) && count($seller_names) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $seller_names when calling createSellers'
+            );
+        }
+
+        $resourcePath = '/v2/crp/advertisers/{advertiserId}/sellers';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // header params
+        if ($authorization !== null) {
+            $headerParams['Authorization'] = ObjectSerializer::toHeaderValue($authorization);
+        }
+
+        // path params
+        if ($advertiser_id !== null) {
+            $resourcePath = str_replace(
+                '{' . 'advertiserId' . '}',
+                ObjectSerializer::toPathValue($advertiser_id),
+                $resourcePath
+            );
+        }
+
+        // body params
+        $_tempBody = null;
+        if (isset($seller_names)) {
+            $_tempBody = $seller_names;
+        }
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json', 'text/json', 'application/xml', 'text/xml', 'text/html']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json', 'text/json', 'application/xml', 'text/xml', 'text/html'],
+                ['application/json', 'text/json', 'application/xml', 'text/xml', 'application/x-www-form-urlencoded', 'text/html']
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            // $_tempBody is the method argument, if present
+            if ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
+            } else {
+                $httpBody = $_tempBody;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+            }
+        }
+
+        // this endpoint requires API key authentication
+        $apiKey = $this->config->getApiKeyWithPrefix('Authorization');
+        if ($apiKey !== null) {
+            $headers['Authorization'] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        return new Request(
+            'POST',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation getAdvertiserCampaigns
      *
      * Get the collection of CRP campaigns associated with the advertiserId.
@@ -3268,6 +3880,345 @@ class SellersV2Api
             $headerParams['Authorization'] = ObjectSerializer::toHeaderValue($authorization);
         }
 
+
+        // body params
+        $_tempBody = null;
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json', 'text/json', 'application/xml', 'text/xml', 'text/html']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json', 'text/json', 'application/xml', 'text/xml', 'text/html'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            // $_tempBody is the method argument, if present
+            if ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
+            } else {
+                $httpBody = $_tempBody;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+            }
+        }
+
+        // this endpoint requires API key authentication
+        $apiKey = $this->config->getApiKeyWithPrefix('Authorization');
+        if ($apiKey !== null) {
+            $headers['Authorization'] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
+     * Operation getSellerCampaignsBySeller
+     *
+     * Get a collection of seller campaigns for this seller.
+     *
+     * @param  string $seller_id Return only seller campaigns belonging to the given seller. (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  string $seller_status Return only seller campaigns for sellers with the given status. (optional)
+     * @param  int $campaign_id Return only seller campaigns associated with the given campaign. (optional)
+     * @param  string $budget_status Return only seller campaigns whose budget has the given status. (optional)
+     *
+     * @throws \Criteo\Marketing\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return \Criteo\Marketing\Model\SellerCampaignMessage[]|\Criteo\Marketing\Model\ErrorSource[]
+     */
+    public function getSellerCampaignsBySeller($seller_id, $authorization, $seller_status = null, $campaign_id = null, $budget_status = null)
+    {
+        list($response) = $this->getSellerCampaignsBySellerWithHttpInfo($seller_id, $authorization, $seller_status, $campaign_id, $budget_status);
+        return $response;
+    }
+
+    /**
+     * Operation getSellerCampaignsBySellerWithHttpInfo
+     *
+     * Get a collection of seller campaigns for this seller.
+     *
+     * @param  string $seller_id Return only seller campaigns belonging to the given seller. (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  string $seller_status Return only seller campaigns for sellers with the given status. (optional)
+     * @param  int $campaign_id Return only seller campaigns associated with the given campaign. (optional)
+     * @param  string $budget_status Return only seller campaigns whose budget has the given status. (optional)
+     *
+     * @throws \Criteo\Marketing\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of \Criteo\Marketing\Model\SellerCampaignMessage[]|\Criteo\Marketing\Model\ErrorSource[], HTTP status code, HTTP response headers (array of strings)
+     */
+    public function getSellerCampaignsBySellerWithHttpInfo($seller_id, $authorization, $seller_status = null, $campaign_id = null, $budget_status = null)
+    {
+        $request = $this->getSellerCampaignsBySellerRequest($seller_id, $authorization, $seller_status, $campaign_id, $budget_status);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            $responseBody = $response->getBody();
+            switch($statusCode) {
+                case 200:
+                    if ('\Criteo\Marketing\Model\SellerCampaignMessage[]' === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\Criteo\Marketing\Model\SellerCampaignMessage[]', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                case 400:
+                    if ('\Criteo\Marketing\Model\ErrorSource[]' === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\Criteo\Marketing\Model\ErrorSource[]', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+            }
+
+            $returnType = '\Criteo\Marketing\Model\SellerCampaignMessage[]';
+            $responseBody = $response->getBody();
+            if ($returnType === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = $responseBody->getContents();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders()
+            ];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Criteo\Marketing\Model\SellerCampaignMessage[]',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+                case 400:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Criteo\Marketing\Model\ErrorSource[]',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getSellerCampaignsBySellerAsync
+     *
+     * Get a collection of seller campaigns for this seller.
+     *
+     * @param  string $seller_id Return only seller campaigns belonging to the given seller. (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  string $seller_status Return only seller campaigns for sellers with the given status. (optional)
+     * @param  int $campaign_id Return only seller campaigns associated with the given campaign. (optional)
+     * @param  string $budget_status Return only seller campaigns whose budget has the given status. (optional)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getSellerCampaignsBySellerAsync($seller_id, $authorization, $seller_status = null, $campaign_id = null, $budget_status = null)
+    {
+        return $this->getSellerCampaignsBySellerAsyncWithHttpInfo($seller_id, $authorization, $seller_status, $campaign_id, $budget_status)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation getSellerCampaignsBySellerAsyncWithHttpInfo
+     *
+     * Get a collection of seller campaigns for this seller.
+     *
+     * @param  string $seller_id Return only seller campaigns belonging to the given seller. (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  string $seller_status Return only seller campaigns for sellers with the given status. (optional)
+     * @param  int $campaign_id Return only seller campaigns associated with the given campaign. (optional)
+     * @param  string $budget_status Return only seller campaigns whose budget has the given status. (optional)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getSellerCampaignsBySellerAsyncWithHttpInfo($seller_id, $authorization, $seller_status = null, $campaign_id = null, $budget_status = null)
+    {
+        $returnType = '\Criteo\Marketing\Model\SellerCampaignMessage[]';
+        $request = $this->getSellerCampaignsBySellerRequest($seller_id, $authorization, $seller_status, $campaign_id, $budget_status);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    $responseBody = $response->getBody();
+                    if ($returnType === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getSellerCampaignsBySeller'
+     *
+     * @param  string $seller_id Return only seller campaigns belonging to the given seller. (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     * @param  string $seller_status Return only seller campaigns for sellers with the given status. (optional)
+     * @param  int $campaign_id Return only seller campaigns associated with the given campaign. (optional)
+     * @param  string $budget_status Return only seller campaigns whose budget has the given status. (optional)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function getSellerCampaignsBySellerRequest($seller_id, $authorization, $seller_status = null, $campaign_id = null, $budget_status = null)
+    {
+        // verify the required parameter 'seller_id' is set
+        if ($seller_id === null || (is_array($seller_id) && count($seller_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $seller_id when calling getSellerCampaignsBySeller'
+            );
+        }
+        // verify the required parameter 'authorization' is set
+        if ($authorization === null || (is_array($authorization) && count($authorization) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $authorization when calling getSellerCampaignsBySeller'
+            );
+        }
+
+        $resourcePath = '/v2/crp/sellers/{sellerId}/seller-campaigns';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // query params
+        if ($seller_status !== null) {
+            $queryParams['sellerStatus'] = ObjectSerializer::toQueryValue($seller_status);
+        }
+        // query params
+        if ($campaign_id !== null) {
+            $queryParams['campaignId'] = ObjectSerializer::toQueryValue($campaign_id);
+        }
+        // query params
+        if ($budget_status !== null) {
+            $queryParams['budgetStatus'] = ObjectSerializer::toQueryValue($budget_status);
+        }
+        // header params
+        if ($authorization !== null) {
+            $headerParams['Authorization'] = ObjectSerializer::toHeaderValue($authorization);
+        }
+
+        // path params
+        if ($seller_id !== null) {
+            $resourcePath = str_replace(
+                '{' . 'sellerId' . '}',
+                ObjectSerializer::toPathValue($seller_id),
+                $resourcePath
+            );
+        }
 
         // body params
         $_tempBody = null;

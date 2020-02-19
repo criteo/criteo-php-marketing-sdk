@@ -5,6 +5,8 @@ All URIs are relative to *https://api.criteo.com/marketing*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**createSellerBudgets**](SellersV2Api.md#createSellerBudgets) | **POST** /v2/crp/budgets | Create a collection of budgets.
+[**createSellerCampaignsBySeller**](SellersV2Api.md#createSellerCampaignsBySeller) | **POST** /v2/crp/sellers/{sellerId}/seller-campaigns | Create a SellerCampaign
+[**createSellers**](SellersV2Api.md#createSellers) | **POST** /v2/crp/advertisers/{advertiserId}/sellers | Create new sellers for an advertiser
 [**getAdvertiserCampaigns**](SellersV2Api.md#getAdvertiserCampaigns) | **GET** /v2/crp/advertisers/{advertiserId} | Get the collection of CRP campaigns associated with the advertiserId.
 [**getAdvertisers**](SellersV2Api.md#getAdvertisers) | **GET** /v2/crp/advertisers | Get the collection of advertisers associated with the user.
 [**getBudgetsBySeller**](SellersV2Api.md#getBudgetsBySeller) | **GET** /v2/crp/sellers/{sellerId}/budgets | Get a collection of budgets for this seller.
@@ -14,6 +16,7 @@ Method | HTTP request | Description
 [**getSellerBudgets**](SellersV2Api.md#getSellerBudgets) | **GET** /v2/crp/budgets | Get a collection of budgets.
 [**getSellerCampaign**](SellersV2Api.md#getSellerCampaign) | **GET** /v2/crp/seller-campaigns/{sellerCampaignId} | Get details for a seller campaign.
 [**getSellerCampaigns**](SellersV2Api.md#getSellerCampaigns) | **GET** /v2/crp/seller-campaigns | Get a collection of seller campaigns.
+[**getSellerCampaignsBySeller**](SellersV2Api.md#getSellerCampaignsBySeller) | **GET** /v2/crp/sellers/{sellerId}/seller-campaigns | Get a collection of seller campaigns for this seller.
 [**getSellers**](SellersV2Api.md#getSellers) | **GET** /v2/crp/sellers | Get a collection of sellers.
 [**updateSellerBudget**](SellersV2Api.md#updateSellerBudget) | **PATCH** /v2/crp/budgets/{budgetId} | Modify a single budget.
 [**updateSellerBudgets**](SellersV2Api.md#updateSellerBudgets) | **PATCH** /v2/crp/budgets | Modify a collection of budgets.
@@ -72,6 +75,138 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**\Criteo\Marketing\Model\SellerBudgetMessage[]**](../Model/SellerBudgetMessage.md)
+
+### Authorization
+
+[Authorization](../../README.md#Authorization)
+
+### HTTP request headers
+
+- **Content-Type**: application/json, text/json, application/xml, text/xml, application/x-www-form-urlencoded, text/html
+- **Accept**: application/json, text/json, application/xml, text/xml, text/html
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../../README.md#documentation-for-models)
+[[Back to README]](../../README.md)
+
+
+## createSellerCampaignsBySeller
+
+> \Criteo\Marketing\Model\SellerCampaignMessage createSellerCampaignsBySeller($seller_id, $authorization, $seller_campaign)
+
+Create a SellerCampaign
+
+Associate an existing Seller with an existing Campaign allowing for budget creation
+
+### Example
+
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+
+// Configure API key authorization: Authorization
+$config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// $config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
+
+
+$apiInstance = new Criteo\Marketing\Api\SellersV2Api(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
+$seller_id = 'seller_id_example'; // string | Supply a generated Id of an existing Seller
+$authorization = 'Bearer VALID_JWT_TOKEN_BASE64'; // string | JWT Bearer Token
+$seller_campaign = new \Criteo\Marketing\Model\CreateSellerCampaignMessageMapi(); // \Criteo\Marketing\Model\CreateSellerCampaignMessageMapi | Supply the campaign Id and bid to create the mapping
+
+try {
+    $result = $apiInstance->createSellerCampaignsBySeller($seller_id, $authorization, $seller_campaign);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling SellersV2Api->createSellerCampaignsBySeller: ', $e->getMessage(), PHP_EOL;
+}
+?>
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **seller_id** | **string**| Supply a generated Id of an existing Seller |
+ **authorization** | **string**| JWT Bearer Token | [default to &#39;Bearer VALID_JWT_TOKEN_BASE64&#39;]
+ **seller_campaign** | [**\Criteo\Marketing\Model\CreateSellerCampaignMessageMapi**](../Model/CreateSellerCampaignMessageMapi.md)| Supply the campaign Id and bid to create the mapping |
+
+### Return type
+
+[**\Criteo\Marketing\Model\SellerCampaignMessage**](../Model/SellerCampaignMessage.md)
+
+### Authorization
+
+[Authorization](../../README.md#Authorization)
+
+### HTTP request headers
+
+- **Content-Type**: application/json, text/json, application/xml, text/xml, application/x-www-form-urlencoded, text/html
+- **Accept**: application/json, text/json, text/html
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../../README.md#documentation-for-models)
+[[Back to README]](../../README.md)
+
+
+## createSellers
+
+> \Criteo\Marketing\Model\SellerBase[] createSellers($advertiser_id, $authorization, $seller_names)
+
+Create new sellers for an advertiser
+
+### Example
+
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+
+// Configure API key authorization: Authorization
+$config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// $config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
+
+
+$apiInstance = new Criteo\Marketing\Api\SellersV2Api(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
+$advertiser_id = 56; // int | 
+$authorization = 'Bearer VALID_JWT_TOKEN_BASE64'; // string | JWT Bearer Token
+$seller_names = array('seller_names_example'); // string[] | 
+
+try {
+    $result = $apiInstance->createSellers($advertiser_id, $authorization, $seller_names);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling SellersV2Api->createSellers: ', $e->getMessage(), PHP_EOL;
+}
+?>
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **advertiser_id** | **int**|  |
+ **authorization** | **string**| JWT Bearer Token | [default to &#39;Bearer VALID_JWT_TOKEN_BASE64&#39;]
+ **seller_names** | [**string[]**](../Model/string.md)|  |
+
+### Return type
+
+[**\Criteo\Marketing\Model\SellerBase[]**](../Model/SellerBase.md)
 
 ### Authorization
 
@@ -691,6 +826,77 @@ Name | Type | Description  | Notes
  **authorization** | **string**| JWT Bearer Token | [default to &#39;Bearer VALID_JWT_TOKEN_BASE64&#39;]
  **seller_status** | **string**| Return only seller campaigns for sellers with the given status. | [optional]
  **seller_id** | **string**| Return only seller campaigns belonging to the given seller. | [optional]
+ **campaign_id** | **int**| Return only seller campaigns associated with the given campaign. | [optional]
+ **budget_status** | **string**| Return only seller campaigns whose budget has the given status. | [optional]
+
+### Return type
+
+[**\Criteo\Marketing\Model\SellerCampaignMessage[]**](../Model/SellerCampaignMessage.md)
+
+### Authorization
+
+[Authorization](../../README.md#Authorization)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, text/json, application/xml, text/xml, text/html
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../../README.md#documentation-for-models)
+[[Back to README]](../../README.md)
+
+
+## getSellerCampaignsBySeller
+
+> \Criteo\Marketing\Model\SellerCampaignMessage[] getSellerCampaignsBySeller($seller_id, $authorization, $seller_status, $campaign_id, $budget_status)
+
+Get a collection of seller campaigns for this seller.
+
+Return a collection of seller campaigns for this seller filtered by optional filter parameters.  If all parameters are omitted the entire collection to which the user has  access is returned. Returned sellers must satisfy all supplied filter  criteria if multiple parameters are used.  See the seller campaigns endpoint for additional details.
+
+### Example
+
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+
+// Configure API key authorization: Authorization
+$config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// $config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
+
+
+$apiInstance = new Criteo\Marketing\Api\SellersV2Api(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
+$seller_id = 'seller_id_example'; // string | Return only seller campaigns belonging to the given seller.
+$authorization = 'Bearer VALID_JWT_TOKEN_BASE64'; // string | JWT Bearer Token
+$seller_status = 'seller_status_example'; // string | Return only seller campaigns for sellers with the given status.
+$campaign_id = 56; // int | Return only seller campaigns associated with the given campaign.
+$budget_status = 'budget_status_example'; // string | Return only seller campaigns whose budget has the given status.
+
+try {
+    $result = $apiInstance->getSellerCampaignsBySeller($seller_id, $authorization, $seller_status, $campaign_id, $budget_status);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling SellersV2Api->getSellerCampaignsBySeller: ', $e->getMessage(), PHP_EOL;
+}
+?>
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **seller_id** | **string**| Return only seller campaigns belonging to the given seller. |
+ **authorization** | **string**| JWT Bearer Token | [default to &#39;Bearer VALID_JWT_TOKEN_BASE64&#39;]
+ **seller_status** | **string**| Return only seller campaigns for sellers with the given status. | [optional]
  **campaign_id** | **int**| Return only seller campaigns associated with the given campaign. | [optional]
  **budget_status** | **string**| Return only seller campaigns whose budget has the given status. | [optional]
 
