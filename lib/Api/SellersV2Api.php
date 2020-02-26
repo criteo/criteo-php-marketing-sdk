@@ -716,14 +716,15 @@ class SellersV2Api
      * @param  int $advertiser_id advertiser_id (required)
      * @param  string $authorization JWT Bearer Token (required)
      * @param  string[] $seller_names seller_names (required)
+     * @param  int $partner_id partner_id (optional)
      *
      * @throws \Criteo\Marketing\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return \Criteo\Marketing\Model\SellerBase[]
      */
-    public function createSellers($advertiser_id, $authorization, $seller_names)
+    public function createSellers($advertiser_id, $authorization, $seller_names, $partner_id = null)
     {
-        list($response) = $this->createSellersWithHttpInfo($advertiser_id, $authorization, $seller_names);
+        list($response) = $this->createSellersWithHttpInfo($advertiser_id, $authorization, $seller_names, $partner_id);
         return $response;
     }
 
@@ -735,14 +736,15 @@ class SellersV2Api
      * @param  int $advertiser_id (required)
      * @param  string $authorization JWT Bearer Token (required)
      * @param  string[] $seller_names (required)
+     * @param  int $partner_id (optional)
      *
      * @throws \Criteo\Marketing\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of \Criteo\Marketing\Model\SellerBase[], HTTP status code, HTTP response headers (array of strings)
      */
-    public function createSellersWithHttpInfo($advertiser_id, $authorization, $seller_names)
+    public function createSellersWithHttpInfo($advertiser_id, $authorization, $seller_names, $partner_id = null)
     {
-        $request = $this->createSellersRequest($advertiser_id, $authorization, $seller_names);
+        $request = $this->createSellersRequest($advertiser_id, $authorization, $seller_names, $partner_id);
 
         try {
             $options = $this->createHttpClientOption();
@@ -825,13 +827,14 @@ class SellersV2Api
      * @param  int $advertiser_id (required)
      * @param  string $authorization JWT Bearer Token (required)
      * @param  string[] $seller_names (required)
+     * @param  int $partner_id (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createSellersAsync($advertiser_id, $authorization, $seller_names)
+    public function createSellersAsync($advertiser_id, $authorization, $seller_names, $partner_id = null)
     {
-        return $this->createSellersAsyncWithHttpInfo($advertiser_id, $authorization, $seller_names)
+        return $this->createSellersAsyncWithHttpInfo($advertiser_id, $authorization, $seller_names, $partner_id)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -847,14 +850,15 @@ class SellersV2Api
      * @param  int $advertiser_id (required)
      * @param  string $authorization JWT Bearer Token (required)
      * @param  string[] $seller_names (required)
+     * @param  int $partner_id (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function createSellersAsyncWithHttpInfo($advertiser_id, $authorization, $seller_names)
+    public function createSellersAsyncWithHttpInfo($advertiser_id, $authorization, $seller_names, $partner_id = null)
     {
         $returnType = '\Criteo\Marketing\Model\SellerBase[]';
-        $request = $this->createSellersRequest($advertiser_id, $authorization, $seller_names);
+        $request = $this->createSellersRequest($advertiser_id, $authorization, $seller_names, $partner_id);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -896,11 +900,12 @@ class SellersV2Api
      * @param  int $advertiser_id (required)
      * @param  string $authorization JWT Bearer Token (required)
      * @param  string[] $seller_names (required)
+     * @param  int $partner_id (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function createSellersRequest($advertiser_id, $authorization, $seller_names)
+    protected function createSellersRequest($advertiser_id, $authorization, $seller_names, $partner_id = null)
     {
         // verify the required parameter 'advertiser_id' is set
         if ($advertiser_id === null || (is_array($advertiser_id) && count($advertiser_id) === 0)) {
@@ -928,6 +933,10 @@ class SellersV2Api
         $httpBody = '';
         $multipart = false;
 
+        // query params
+        if ($partner_id !== null) {
+            $queryParams['partnerId'] = ObjectSerializer::toQueryValue($partner_id);
+        }
         // header params
         if ($authorization !== null) {
             $headerParams['Authorization'] = ObjectSerializer::toHeaderValue($authorization);

@@ -159,7 +159,7 @@ Name | Type | Description  | Notes
 
 ## createSellers
 
-> \Criteo\Marketing\Model\SellerBase[] createSellers($advertiser_id, $authorization, $seller_names)
+> \Criteo\Marketing\Model\SellerBase[] createSellers($advertiser_id, $authorization, $seller_names, $partner_id)
 
 Create new sellers for an advertiser
 
@@ -185,9 +185,10 @@ $apiInstance = new Criteo\Marketing\Api\SellersV2Api(
 $advertiser_id = 56; // int | 
 $authorization = 'Bearer VALID_JWT_TOKEN_BASE64'; // string | JWT Bearer Token
 $seller_names = array('seller_names_example'); // string[] | 
+$partner_id = 56; // int | 
 
 try {
-    $result = $apiInstance->createSellers($advertiser_id, $authorization, $seller_names);
+    $result = $apiInstance->createSellers($advertiser_id, $authorization, $seller_names, $partner_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling SellersV2Api->createSellers: ', $e->getMessage(), PHP_EOL;
@@ -203,6 +204,7 @@ Name | Type | Description  | Notes
  **advertiser_id** | **int**|  |
  **authorization** | **string**| JWT Bearer Token | [default to &#39;Bearer VALID_JWT_TOKEN_BASE64&#39;]
  **seller_names** | [**string[]**](../Model/string.md)|  |
+ **partner_id** | **int**|  | [optional]
 
 ### Return type
 
