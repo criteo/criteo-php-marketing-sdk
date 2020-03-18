@@ -1024,6 +1024,298 @@ class SellersV2Api
     }
 
     /**
+     * Operation getAdvertiser
+     *
+     * Get an advertiser.
+     *
+     * @param  int $advertiser_id advertiser_id (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     *
+     * @throws \Criteo\Marketing\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return \Criteo\Marketing\Model\AdvertiserInfoMessage
+     */
+    public function getAdvertiser($advertiser_id, $authorization)
+    {
+        list($response) = $this->getAdvertiserWithHttpInfo($advertiser_id, $authorization);
+        return $response;
+    }
+
+    /**
+     * Operation getAdvertiserWithHttpInfo
+     *
+     * Get an advertiser.
+     *
+     * @param  int $advertiser_id (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     *
+     * @throws \Criteo\Marketing\ApiException on non-2xx response
+     * @throws \InvalidArgumentException
+     * @return array of \Criteo\Marketing\Model\AdvertiserInfoMessage, HTTP status code, HTTP response headers (array of strings)
+     */
+    public function getAdvertiserWithHttpInfo($advertiser_id, $authorization)
+    {
+        $request = $this->getAdvertiserRequest($advertiser_id, $authorization);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw new ApiException(
+                    "[{$e->getCode()}] {$e->getMessage()}",
+                    $e->getCode(),
+                    $e->getResponse() ? $e->getResponse()->getHeaders() : null,
+                    $e->getResponse() ? $e->getResponse()->getBody()->getContents() : null
+                );
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            $responseBody = $response->getBody();
+            switch($statusCode) {
+                case 200:
+                    if ('\Criteo\Marketing\Model\AdvertiserInfoMessage' === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, '\Criteo\Marketing\Model\AdvertiserInfoMessage', []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+            }
+
+            $returnType = '\Criteo\Marketing\Model\AdvertiserInfoMessage';
+            $responseBody = $response->getBody();
+            if ($returnType === '\SplFileObject') {
+                $content = $responseBody; //stream goes to serializer
+            } else {
+                $content = $responseBody->getContents();
+            }
+
+            return [
+                ObjectSerializer::deserialize($content, $returnType, []),
+                $response->getStatusCode(),
+                $response->getHeaders()
+            ];
+
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = ObjectSerializer::deserialize(
+                        $e->getResponseBody(),
+                        '\Criteo\Marketing\Model\AdvertiserInfoMessage',
+                        $e->getResponseHeaders()
+                    );
+                    $e->setResponseObject($data);
+                    break;
+            }
+            throw $e;
+        }
+    }
+
+    /**
+     * Operation getAdvertiserAsync
+     *
+     * Get an advertiser.
+     *
+     * @param  int $advertiser_id (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getAdvertiserAsync($advertiser_id, $authorization)
+    {
+        return $this->getAdvertiserAsyncWithHttpInfo($advertiser_id, $authorization)
+            ->then(
+                function ($response) {
+                    return $response[0];
+                }
+            );
+    }
+
+    /**
+     * Operation getAdvertiserAsyncWithHttpInfo
+     *
+     * Get an advertiser.
+     *
+     * @param  int $advertiser_id (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Promise\PromiseInterface
+     */
+    public function getAdvertiserAsyncWithHttpInfo($advertiser_id, $authorization)
+    {
+        $returnType = '\Criteo\Marketing\Model\AdvertiserInfoMessage';
+        $request = $this->getAdvertiserRequest($advertiser_id, $authorization);
+
+        return $this->client
+            ->sendAsync($request, $this->createHttpClientOption())
+            ->then(
+                function ($response) use ($returnType) {
+                    $responseBody = $response->getBody();
+                    if ($returnType === '\SplFileObject') {
+                        $content = $responseBody; //stream goes to serializer
+                    } else {
+                        $content = $responseBody->getContents();
+                    }
+
+                    return [
+                        ObjectSerializer::deserialize($content, $returnType, []),
+                        $response->getStatusCode(),
+                        $response->getHeaders()
+                    ];
+                },
+                function ($exception) {
+                    $response = $exception->getResponse();
+                    $statusCode = $response->getStatusCode();
+                    throw new ApiException(
+                        sprintf(
+                            '[%d] Error connecting to the API (%s)',
+                            $statusCode,
+                            $exception->getRequest()->getUri()
+                        ),
+                        $statusCode,
+                        $response->getHeaders(),
+                        $response->getBody()
+                    );
+                }
+            );
+    }
+
+    /**
+     * Create request for operation 'getAdvertiser'
+     *
+     * @param  int $advertiser_id (required)
+     * @param  string $authorization JWT Bearer Token (required)
+     *
+     * @throws \InvalidArgumentException
+     * @return \GuzzleHttp\Psr7\Request
+     */
+    protected function getAdvertiserRequest($advertiser_id, $authorization)
+    {
+        // verify the required parameter 'advertiser_id' is set
+        if ($advertiser_id === null || (is_array($advertiser_id) && count($advertiser_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $advertiser_id when calling getAdvertiser'
+            );
+        }
+        // verify the required parameter 'authorization' is set
+        if ($authorization === null || (is_array($authorization) && count($authorization) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $authorization when calling getAdvertiser'
+            );
+        }
+
+        $resourcePath = '/v2/crp/advertisers/{advertiserId}';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+
+        // header params
+        if ($authorization !== null) {
+            $headerParams['Authorization'] = ObjectSerializer::toHeaderValue($authorization);
+        }
+
+        // path params
+        if ($advertiser_id !== null) {
+            $resourcePath = str_replace(
+                '{' . 'advertiserId' . '}',
+                ObjectSerializer::toPathValue($advertiser_id),
+                $resourcePath
+            );
+        }
+
+        // body params
+        $_tempBody = null;
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json', 'text/json', 'text/html']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json', 'text/json', 'text/html'],
+                []
+            );
+        }
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            // $_tempBody is the method argument, if present
+            if ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($_tempBody));
+            } else {
+                $httpBody = $_tempBody;
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                // for HTTP post (form)
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+
+            } else {
+                // for HTTP post (form)
+                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+            }
+        }
+
+        // this endpoint requires API key authentication
+        $apiKey = $this->config->getApiKeyWithPrefix('Authorization');
+        if ($apiKey !== null) {
+            $headers['Authorization'] = $apiKey;
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    /**
      * Operation getAdvertiserCampaigns
      *
      * Get the collection of CRP campaigns associated with the advertiserId.
@@ -1225,7 +1517,7 @@ class SellersV2Api
             );
         }
 
-        $resourcePath = '/v2/crp/advertisers/{advertiserId}';
+        $resourcePath = '/v2/crp/advertisers/{advertiserId}/campaigns';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];

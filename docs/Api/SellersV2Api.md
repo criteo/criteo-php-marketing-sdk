@@ -7,7 +7,8 @@ Method | HTTP request | Description
 [**createSellerBudgets**](SellersV2Api.md#createSellerBudgets) | **POST** /v2/crp/budgets | Create a collection of budgets.
 [**createSellerCampaignsBySeller**](SellersV2Api.md#createSellerCampaignsBySeller) | **POST** /v2/crp/sellers/{sellerId}/seller-campaigns | Create a SellerCampaign
 [**createSellers**](SellersV2Api.md#createSellers) | **POST** /v2/crp/advertisers/{advertiserId}/sellers | Create new sellers for an advertiser
-[**getAdvertiserCampaigns**](SellersV2Api.md#getAdvertiserCampaigns) | **GET** /v2/crp/advertisers/{advertiserId} | Get the collection of CRP campaigns associated with the advertiserId.
+[**getAdvertiser**](SellersV2Api.md#getAdvertiser) | **GET** /v2/crp/advertisers/{advertiserId} | Get an advertiser.
+[**getAdvertiserCampaigns**](SellersV2Api.md#getAdvertiserCampaigns) | **GET** /v2/crp/advertisers/{advertiserId}/campaigns | Get the collection of CRP campaigns associated with the advertiserId.
 [**getAdvertisers**](SellersV2Api.md#getAdvertisers) | **GET** /v2/crp/advertisers | Get the collection of advertisers associated with the user.
 [**getBudgetsBySeller**](SellersV2Api.md#getBudgetsBySeller) | **GET** /v2/crp/sellers/{sellerId}/budgets | Get a collection of budgets for this seller.
 [**getBudgetsBySellerCampaignId**](SellersV2Api.md#getBudgetsBySellerCampaignId) | **GET** /v2/crp/seller-campaigns/{sellerCampaignId}/budgets | Get a collection of budgets for this seller campaign.
@@ -218,6 +219,69 @@ Name | Type | Description  | Notes
 
 - **Content-Type**: application/json, text/json, application/xml, text/xml, application/x-www-form-urlencoded, text/html
 - **Accept**: application/json, text/json, application/xml, text/xml, text/html
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../../README.md#documentation-for-models)
+[[Back to README]](../../README.md)
+
+
+## getAdvertiser
+
+> \Criteo\Marketing\Model\AdvertiserInfoMessage getAdvertiser($advertiser_id, $authorization)
+
+Get an advertiser.
+
+### Example
+
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+
+// Configure API key authorization: Authorization
+$config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// $config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
+
+
+$apiInstance = new Criteo\Marketing\Api\SellersV2Api(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
+$advertiser_id = 56; // int | 
+$authorization = 'Bearer VALID_JWT_TOKEN_BASE64'; // string | JWT Bearer Token
+
+try {
+    $result = $apiInstance->getAdvertiser($advertiser_id, $authorization);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling SellersV2Api->getAdvertiser: ', $e->getMessage(), PHP_EOL;
+}
+?>
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **advertiser_id** | **int**|  |
+ **authorization** | **string**| JWT Bearer Token | [default to &#39;Bearer VALID_JWT_TOKEN_BASE64&#39;]
+
+### Return type
+
+[**\Criteo\Marketing\Model\AdvertiserInfoMessage**](../Model/AdvertiserInfoMessage.md)
+
+### Authorization
+
+[Authorization](../../README.md#Authorization)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, text/json, text/html
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints)
 [[Back to Model list]](../../README.md#documentation-for-models)
