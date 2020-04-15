@@ -207,7 +207,10 @@ class StatsQueryMessageEx implements ModelInterface, ArrayAccess
     const REPORT_TYPE_FACEBOOK_DPA = 'FacebookDPA';
     const REPORT_TYPE_TRANSACTION_ID = 'TransactionID';
     const DIMENSIONS_CAMPAIGN_ID = 'CampaignId';
+    const DIMENSIONS_CAMPAIGN = 'Campaign';
     const DIMENSIONS_ADVERTISER_ID = 'AdvertiserId';
+    const DIMENSIONS_ADVERTISER = 'Advertiser';
+    const DIMENSIONS_CATEGORY_ID = 'CategoryId';
     const DIMENSIONS_CATEGORY = 'Category';
     const DIMENSIONS_SELLER = 'Seller';
     const DIMENSIONS_HOUR = 'Hour';
@@ -248,7 +251,10 @@ class StatsQueryMessageEx implements ModelInterface, ArrayAccess
     {
         return [
             self::DIMENSIONS_CAMPAIGN_ID,
+            self::DIMENSIONS_CAMPAIGN,
             self::DIMENSIONS_ADVERTISER_ID,
+            self::DIMENSIONS_ADVERTISER,
+            self::DIMENSIONS_CATEGORY_ID,
             self::DIMENSIONS_CATEGORY,
             self::DIMENSIONS_SELLER,
             self::DIMENSIONS_HOUR,
