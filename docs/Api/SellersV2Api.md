@@ -10,6 +10,7 @@ Method | HTTP request | Description
 [**getAdvertiser**](SellersV2Api.md#getAdvertiser) | **GET** /v2/crp/advertisers/{advertiserId} | Get an advertiser.
 [**getAdvertiserCampaigns**](SellersV2Api.md#getAdvertiserCampaigns) | **GET** /v2/crp/advertisers/{advertiserId}/campaigns | Get the collection of CRP campaigns associated with the advertiserId.
 [**getAdvertisers**](SellersV2Api.md#getAdvertisers) | **GET** /v2/crp/advertisers | Get the collection of advertisers associated with the user.
+[**getBudgetsByAdvertiser**](SellersV2Api.md#getBudgetsByAdvertiser) | **GET** /v2/crp/advertisers/{advertiserId}/budgets | Get CRP budgets for a specific advertiser
 [**getBudgetsBySeller**](SellersV2Api.md#getBudgetsBySeller) | **GET** /v2/crp/sellers/{sellerId}/budgets | Get a collection of budgets for this seller.
 [**getBudgetsBySellerCampaignId**](SellersV2Api.md#getBudgetsBySellerCampaignId) | **GET** /v2/crp/seller-campaigns/{sellerCampaignId}/budgets | Get a collection of budgets for this seller campaign.
 [**getSeller**](SellersV2Api.md#getSeller) | **GET** /v2/crp/sellers/{sellerId} | Get details for a seller.
@@ -17,6 +18,7 @@ Method | HTTP request | Description
 [**getSellerBudgets**](SellersV2Api.md#getSellerBudgets) | **GET** /v2/crp/budgets | Get a collection of budgets.
 [**getSellerCampaign**](SellersV2Api.md#getSellerCampaign) | **GET** /v2/crp/seller-campaigns/{sellerCampaignId} | Get details for a seller campaign.
 [**getSellerCampaigns**](SellersV2Api.md#getSellerCampaigns) | **GET** /v2/crp/seller-campaigns | Get a collection of seller campaigns.
+[**getSellerCampaignsByAdvertiser**](SellersV2Api.md#getSellerCampaignsByAdvertiser) | **GET** /v2/crp/advertisers/{advertiserId}/seller-campaigns | Get CRP seller-campaigns for a specific advertiser
 [**getSellerCampaignsBySeller**](SellersV2Api.md#getSellerCampaignsBySeller) | **GET** /v2/crp/sellers/{sellerId}/seller-campaigns | Get a collection of seller campaigns for this seller.
 [**getSellers**](SellersV2Api.md#getSellers) | **GET** /v2/crp/sellers | Get a collection of sellers.
 [**updateSellerBudget**](SellersV2Api.md#updateSellerBudget) | **PATCH** /v2/crp/budgets/{budgetId} | Modify a single budget.
@@ -397,6 +399,85 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**\Criteo\Marketing\Model\AdvertiserInfoMessage[]**](../Model/AdvertiserInfoMessage.md)
+
+### Authorization
+
+[Authorization](../../README.md#Authorization)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, text/json, application/xml, text/xml, text/html
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../../README.md#documentation-for-models)
+[[Back to README]](../../README.md)
+
+
+## getBudgetsByAdvertiser
+
+> \Criteo\Marketing\Model\SellerBudgetMessage[] getBudgetsByAdvertiser($advertiser_id, $authorization, $status, $with_balance, $with_spend, $end_after_date, $start_before_date, $budget_id, $seller_id, $type)
+
+Get CRP budgets for a specific advertiser
+
+### Example
+
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+
+// Configure API key authorization: Authorization
+$config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// $config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
+
+
+$apiInstance = new Criteo\Marketing\Api\SellersV2Api(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
+$advertiser_id = 56; // int | 
+$authorization = 'Bearer VALID_JWT_TOKEN_BASE64'; // string | JWT Bearer Token
+$status = 'status_example'; // string | 
+$with_balance = True; // bool | 
+$with_spend = True; // bool | 
+$end_after_date = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | 
+$start_before_date = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | 
+$budget_id = 56; // int | 
+$seller_id = 56; // int | 
+$type = 'type_example'; // string | 
+
+try {
+    $result = $apiInstance->getBudgetsByAdvertiser($advertiser_id, $authorization, $status, $with_balance, $with_spend, $end_after_date, $start_before_date, $budget_id, $seller_id, $type);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling SellersV2Api->getBudgetsByAdvertiser: ', $e->getMessage(), PHP_EOL;
+}
+?>
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **advertiser_id** | **int**|  |
+ **authorization** | **string**| JWT Bearer Token | [default to &#39;Bearer VALID_JWT_TOKEN_BASE64&#39;]
+ **status** | **string**|  | [optional]
+ **with_balance** | **bool**|  | [optional]
+ **with_spend** | **bool**|  | [optional]
+ **end_after_date** | **\DateTime**|  | [optional]
+ **start_before_date** | **\DateTime**|  | [optional]
+ **budget_id** | **int**|  | [optional]
+ **seller_id** | **int**|  | [optional]
+ **type** | **string**|  | [optional]
+
+### Return type
+
+[**\Criteo\Marketing\Model\SellerBudgetMessage[]**](../Model/SellerBudgetMessage.md)
 
 ### Authorization
 
@@ -894,6 +975,69 @@ Name | Type | Description  | Notes
  **seller_id** | **string**| Return only seller campaigns belonging to the given seller. | [optional]
  **campaign_id** | **int**| Return only seller campaigns associated with the given campaign. | [optional]
  **budget_status** | **string**| Return only seller campaigns whose budget has the given status. | [optional]
+
+### Return type
+
+[**\Criteo\Marketing\Model\SellerCampaignMessage[]**](../Model/SellerCampaignMessage.md)
+
+### Authorization
+
+[Authorization](../../README.md#Authorization)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, text/json, application/xml, text/xml, text/html
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../../README.md#documentation-for-models)
+[[Back to README]](../../README.md)
+
+
+## getSellerCampaignsByAdvertiser
+
+> \Criteo\Marketing\Model\SellerCampaignMessage[] getSellerCampaignsByAdvertiser($advertiser_id, $authorization)
+
+Get CRP seller-campaigns for a specific advertiser
+
+### Example
+
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+
+// Configure API key authorization: Authorization
+$config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// $config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
+
+
+$apiInstance = new Criteo\Marketing\Api\SellersV2Api(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
+$advertiser_id = 56; // int | 
+$authorization = 'Bearer VALID_JWT_TOKEN_BASE64'; // string | JWT Bearer Token
+
+try {
+    $result = $apiInstance->getSellerCampaignsByAdvertiser($advertiser_id, $authorization);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling SellersV2Api->getSellerCampaignsByAdvertiser: ', $e->getMessage(), PHP_EOL;
+}
+?>
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **advertiser_id** | **int**|  |
+ **authorization** | **string**| JWT Bearer Token | [default to &#39;Bearer VALID_JWT_TOKEN_BASE64&#39;]
 
 ### Return type
 
