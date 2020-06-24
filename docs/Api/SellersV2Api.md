@@ -9,6 +9,7 @@ Method | HTTP request | Description
 [**createSellers**](SellersV2Api.md#createSellers) | **POST** /v2/crp/advertisers/{advertiserId}/sellers | Create new sellers for an advertiser
 [**getAdvertiser**](SellersV2Api.md#getAdvertiser) | **GET** /v2/crp/advertisers/{advertiserId} | Get an advertiser.
 [**getAdvertiserCampaigns**](SellersV2Api.md#getAdvertiserCampaigns) | **GET** /v2/crp/advertisers/{advertiserId}/campaigns | Get the collection of CRP campaigns associated with the advertiserId.
+[**getAdvertiserPreviewLimits**](SellersV2Api.md#getAdvertiserPreviewLimits) | **GET** /v2/crp/advertisers/preview-limit | Get the collection of advertisers preview limits associated with the user.
 [**getAdvertisers**](SellersV2Api.md#getAdvertisers) | **GET** /v2/crp/advertisers | Get the collection of advertisers associated with the user.
 [**getBudgetsByAdvertiser**](SellersV2Api.md#getBudgetsByAdvertiser) | **GET** /v2/crp/advertisers/{advertiserId}/budgets | Get CRP budgets for a specific advertiser
 [**getBudgetsBySeller**](SellersV2Api.md#getBudgetsBySeller) | **GET** /v2/crp/sellers/{sellerId}/budgets | Get a collection of budgets for this seller.
@@ -338,6 +339,67 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**\Criteo\Marketing\Model\AdvertiserCampaignMessage[]**](../Model/AdvertiserCampaignMessage.md)
+
+### Authorization
+
+[Authorization](../../README.md#Authorization)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, text/json, application/xml, text/xml, text/html
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../../README.md#documentation-for-models)
+[[Back to README]](../../README.md)
+
+
+## getAdvertiserPreviewLimits
+
+> \Criteo\Marketing\Model\AdvertiserQuotaMessage[] getAdvertiserPreviewLimits($authorization)
+
+Get the collection of advertisers preview limits associated with the user.
+
+### Example
+
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+
+// Configure API key authorization: Authorization
+$config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// $config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
+
+
+$apiInstance = new Criteo\Marketing\Api\SellersV2Api(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
+$authorization = 'Bearer VALID_JWT_TOKEN_BASE64'; // string | JWT Bearer Token
+
+try {
+    $result = $apiInstance->getAdvertiserPreviewLimits($authorization);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling SellersV2Api->getAdvertiserPreviewLimits: ', $e->getMessage(), PHP_EOL;
+}
+?>
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **authorization** | **string**| JWT Bearer Token | [default to &#39;Bearer VALID_JWT_TOKEN_BASE64&#39;]
+
+### Return type
+
+[**\Criteo\Marketing\Model\AdvertiserQuotaMessage[]**](../Model/AdvertiserQuotaMessage.md)
 
 ### Authorization
 
