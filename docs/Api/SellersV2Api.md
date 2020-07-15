@@ -15,6 +15,7 @@ Method | HTTP request | Description
 [**getBudgetsBySeller**](SellersV2Api.md#getBudgetsBySeller) | **GET** /v2/crp/sellers/{sellerId}/budgets | Get a collection of budgets for this seller.
 [**getBudgetsBySellerCampaignId**](SellersV2Api.md#getBudgetsBySellerCampaignId) | **GET** /v2/crp/seller-campaigns/{sellerCampaignId}/budgets | Get a collection of budgets for this seller campaign.
 [**getSeller**](SellersV2Api.md#getSeller) | **GET** /v2/crp/sellers/{sellerId} | Get details for a seller.
+[**getSellerAdDemo**](SellersV2Api.md#getSellerAdDemo) | **GET** /v2/crp/advertisers/{advertiserId}/ad-preview | Get a demo ad with products from the given seller
 [**getSellerBudget**](SellersV2Api.md#getSellerBudget) | **GET** /v2/crp/budgets/{budgetId} | Get details for a budget.
 [**getSellerBudgets**](SellersV2Api.md#getSellerBudgets) | **GET** /v2/crp/budgets | Get a collection of budgets.
 [**getSellerCampaign**](SellersV2Api.md#getSellerCampaign) | **GET** /v2/crp/seller-campaigns/{sellerCampaignId} | Get details for a seller campaign.
@@ -761,6 +762,77 @@ Name | Type | Description  | Notes
 ### Return type
 
 [**\Criteo\Marketing\Model\SellerBase**](../Model/SellerBase.md)
+
+### Authorization
+
+[Authorization](../../README.md#Authorization)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json, text/json, application/xml, text/xml, text/html
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../../README.md#documentation-for-models)
+[[Back to README]](../../README.md)
+
+
+## getSellerAdDemo
+
+> string getSellerAdDemo($advertiser_id, $seller_id, $authorization, $campaign_id, $height, $width)
+
+Get a demo ad with products from the given seller
+
+### Example
+
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+
+// Configure API key authorization: Authorization
+$config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKey('Authorization', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// $config = Criteo\Marketing\Configuration::getDefaultConfiguration()->setApiKeyPrefix('Authorization', 'Bearer');
+
+
+$apiInstance = new Criteo\Marketing\Api\SellersV2Api(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
+$advertiser_id = 56; // int | 
+$seller_id = 56; // int | 
+$authorization = 'Bearer VALID_JWT_TOKEN_BASE64'; // string | JWT Bearer Token
+$campaign_id = 56; // int | 
+$height = 56; // int | 
+$width = 56; // int | 
+
+try {
+    $result = $apiInstance->getSellerAdDemo($advertiser_id, $seller_id, $authorization, $campaign_id, $height, $width);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling SellersV2Api->getSellerAdDemo: ', $e->getMessage(), PHP_EOL;
+}
+?>
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **advertiser_id** | **int**|  |
+ **seller_id** | **int**|  |
+ **authorization** | **string**| JWT Bearer Token | [default to &#39;Bearer VALID_JWT_TOKEN_BASE64&#39;]
+ **campaign_id** | **int**|  | [optional]
+ **height** | **int**|  | [optional]
+ **width** | **int**|  | [optional]
+
+### Return type
+
+**string**
 
 ### Authorization
 
