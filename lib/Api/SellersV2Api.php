@@ -1610,7 +1610,7 @@ class SellersV2Api
     /**
      * Operation getAdvertiserPreviewLimits
      *
-     * Get the collection of advertisers preview limits associated with the user.
+     * Get the collection of advertisers preview limits associated with the authorized user.
      *
      * @param  string $authorization JWT Bearer Token (required)
      *
@@ -1627,7 +1627,7 @@ class SellersV2Api
     /**
      * Operation getAdvertiserPreviewLimitsWithHttpInfo
      *
-     * Get the collection of advertisers preview limits associated with the user.
+     * Get the collection of advertisers preview limits associated with the authorized user.
      *
      * @param  string $authorization JWT Bearer Token (required)
      *
@@ -1715,7 +1715,7 @@ class SellersV2Api
     /**
      * Operation getAdvertiserPreviewLimitsAsync
      *
-     * Get the collection of advertisers preview limits associated with the user.
+     * Get the collection of advertisers preview limits associated with the authorized user.
      *
      * @param  string $authorization JWT Bearer Token (required)
      *
@@ -1735,7 +1735,7 @@ class SellersV2Api
     /**
      * Operation getAdvertiserPreviewLimitsAsyncWithHttpInfo
      *
-     * Get the collection of advertisers preview limits associated with the user.
+     * Get the collection of advertisers preview limits associated with the authorized user.
      *
      * @param  string $authorization JWT Bearer Token (required)
      *
@@ -3573,7 +3573,7 @@ class SellersV2Api
     /**
      * Operation getSellerAdDemo
      *
-     * Get a demo ad with products from the given seller
+     * Get a preview of an HTML ad with products belonging to the provided seller
      *
      * @param  int $advertiser_id advertiser_id (required)
      * @param  int $seller_id seller_id (required)
@@ -3595,7 +3595,7 @@ class SellersV2Api
     /**
      * Operation getSellerAdDemoWithHttpInfo
      *
-     * Get a demo ad with products from the given seller
+     * Get a preview of an HTML ad with products belonging to the provided seller
      *
      * @param  int $advertiser_id (required)
      * @param  int $seller_id (required)
@@ -3688,7 +3688,7 @@ class SellersV2Api
     /**
      * Operation getSellerAdDemoAsync
      *
-     * Get a demo ad with products from the given seller
+     * Get a preview of an HTML ad with products belonging to the provided seller
      *
      * @param  int $advertiser_id (required)
      * @param  int $seller_id (required)
@@ -3713,7 +3713,7 @@ class SellersV2Api
     /**
      * Operation getSellerAdDemoAsyncWithHttpInfo
      *
-     * Get a demo ad with products from the given seller
+     * Get a preview of an HTML ad with products belonging to the provided seller
      *
      * @param  int $advertiser_id (required)
      * @param  int $seller_id (required)
@@ -4230,14 +4230,15 @@ class SellersV2Api
      * @param  int $campaign_id Return only budgets that pay for a given campaign. (optional)
      * @param  string $seller_id Return only budgets belonging to the given seller. (optional)
      * @param  string $type Return only budgets with the given budget type. (optional)
+     * @param  int $advertiser_id Return only budgets belonging to the specified advertiser (optional)
      *
      * @throws \Criteo\Marketing\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return \Criteo\Marketing\Model\SellerBudgetMessage[]|\Criteo\Marketing\Model\ErrorSource[]
      */
-    public function getSellerBudgets($authorization, $status = null, $with_balance = null, $with_spend = null, $end_after_date = null, $start_before_date = null, $campaign_id = null, $seller_id = null, $type = null)
+    public function getSellerBudgets($authorization, $status = null, $with_balance = null, $with_spend = null, $end_after_date = null, $start_before_date = null, $campaign_id = null, $seller_id = null, $type = null, $advertiser_id = null)
     {
-        list($response) = $this->getSellerBudgetsWithHttpInfo($authorization, $status, $with_balance, $with_spend, $end_after_date, $start_before_date, $campaign_id, $seller_id, $type);
+        list($response) = $this->getSellerBudgetsWithHttpInfo($authorization, $status, $with_balance, $with_spend, $end_after_date, $start_before_date, $campaign_id, $seller_id, $type, $advertiser_id);
         return $response;
     }
 
@@ -4255,14 +4256,15 @@ class SellersV2Api
      * @param  int $campaign_id Return only budgets that pay for a given campaign. (optional)
      * @param  string $seller_id Return only budgets belonging to the given seller. (optional)
      * @param  string $type Return only budgets with the given budget type. (optional)
+     * @param  int $advertiser_id Return only budgets belonging to the specified advertiser (optional)
      *
      * @throws \Criteo\Marketing\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of \Criteo\Marketing\Model\SellerBudgetMessage[]|\Criteo\Marketing\Model\ErrorSource[], HTTP status code, HTTP response headers (array of strings)
      */
-    public function getSellerBudgetsWithHttpInfo($authorization, $status = null, $with_balance = null, $with_spend = null, $end_after_date = null, $start_before_date = null, $campaign_id = null, $seller_id = null, $type = null)
+    public function getSellerBudgetsWithHttpInfo($authorization, $status = null, $with_balance = null, $with_spend = null, $end_after_date = null, $start_before_date = null, $campaign_id = null, $seller_id = null, $type = null, $advertiser_id = null)
     {
-        $request = $this->getSellerBudgetsRequest($authorization, $status, $with_balance, $with_spend, $end_after_date, $start_before_date, $campaign_id, $seller_id, $type);
+        $request = $this->getSellerBudgetsRequest($authorization, $status, $with_balance, $with_spend, $end_after_date, $start_before_date, $campaign_id, $seller_id, $type, $advertiser_id);
 
         try {
             $options = $this->createHttpClientOption();
@@ -4371,13 +4373,14 @@ class SellersV2Api
      * @param  int $campaign_id Return only budgets that pay for a given campaign. (optional)
      * @param  string $seller_id Return only budgets belonging to the given seller. (optional)
      * @param  string $type Return only budgets with the given budget type. (optional)
+     * @param  int $advertiser_id Return only budgets belonging to the specified advertiser (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getSellerBudgetsAsync($authorization, $status = null, $with_balance = null, $with_spend = null, $end_after_date = null, $start_before_date = null, $campaign_id = null, $seller_id = null, $type = null)
+    public function getSellerBudgetsAsync($authorization, $status = null, $with_balance = null, $with_spend = null, $end_after_date = null, $start_before_date = null, $campaign_id = null, $seller_id = null, $type = null, $advertiser_id = null)
     {
-        return $this->getSellerBudgetsAsyncWithHttpInfo($authorization, $status, $with_balance, $with_spend, $end_after_date, $start_before_date, $campaign_id, $seller_id, $type)
+        return $this->getSellerBudgetsAsyncWithHttpInfo($authorization, $status, $with_balance, $with_spend, $end_after_date, $start_before_date, $campaign_id, $seller_id, $type, $advertiser_id)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -4399,14 +4402,15 @@ class SellersV2Api
      * @param  int $campaign_id Return only budgets that pay for a given campaign. (optional)
      * @param  string $seller_id Return only budgets belonging to the given seller. (optional)
      * @param  string $type Return only budgets with the given budget type. (optional)
+     * @param  int $advertiser_id Return only budgets belonging to the specified advertiser (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getSellerBudgetsAsyncWithHttpInfo($authorization, $status = null, $with_balance = null, $with_spend = null, $end_after_date = null, $start_before_date = null, $campaign_id = null, $seller_id = null, $type = null)
+    public function getSellerBudgetsAsyncWithHttpInfo($authorization, $status = null, $with_balance = null, $with_spend = null, $end_after_date = null, $start_before_date = null, $campaign_id = null, $seller_id = null, $type = null, $advertiser_id = null)
     {
         $returnType = '\Criteo\Marketing\Model\SellerBudgetMessage[]';
-        $request = $this->getSellerBudgetsRequest($authorization, $status, $with_balance, $with_spend, $end_after_date, $start_before_date, $campaign_id, $seller_id, $type);
+        $request = $this->getSellerBudgetsRequest($authorization, $status, $with_balance, $with_spend, $end_after_date, $start_before_date, $campaign_id, $seller_id, $type, $advertiser_id);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -4454,11 +4458,12 @@ class SellersV2Api
      * @param  int $campaign_id Return only budgets that pay for a given campaign. (optional)
      * @param  string $seller_id Return only budgets belonging to the given seller. (optional)
      * @param  string $type Return only budgets with the given budget type. (optional)
+     * @param  int $advertiser_id Return only budgets belonging to the specified advertiser (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getSellerBudgetsRequest($authorization, $status = null, $with_balance = null, $with_spend = null, $end_after_date = null, $start_before_date = null, $campaign_id = null, $seller_id = null, $type = null)
+    protected function getSellerBudgetsRequest($authorization, $status = null, $with_balance = null, $with_spend = null, $end_after_date = null, $start_before_date = null, $campaign_id = null, $seller_id = null, $type = null, $advertiser_id = null)
     {
         // verify the required parameter 'authorization' is set
         if ($authorization === null || (is_array($authorization) && count($authorization) === 0)) {
@@ -4505,6 +4510,10 @@ class SellersV2Api
         // query params
         if ($type !== null) {
             $queryParams['type'] = ObjectSerializer::toQueryValue($type);
+        }
+        // query params
+        if ($advertiser_id !== null) {
+            $queryParams['advertiserId'] = ObjectSerializer::toQueryValue($advertiser_id);
         }
         // header params
         if ($authorization !== null) {
@@ -4903,14 +4912,15 @@ class SellersV2Api
      * @param  string $seller_id Return only seller campaigns belonging to the given seller. (optional)
      * @param  int $campaign_id Return only seller campaigns associated with the given campaign. (optional)
      * @param  string $budget_status Return only seller campaigns whose budget has the given status. (optional)
+     * @param  int $advertiser_id Return only seller belonging to the specified advertiser (optional)
      *
      * @throws \Criteo\Marketing\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return \Criteo\Marketing\Model\SellerCampaignMessage[]|\Criteo\Marketing\Model\ErrorSource[]
      */
-    public function getSellerCampaigns($authorization, $seller_status = null, $seller_id = null, $campaign_id = null, $budget_status = null)
+    public function getSellerCampaigns($authorization, $seller_status = null, $seller_id = null, $campaign_id = null, $budget_status = null, $advertiser_id = null)
     {
-        list($response) = $this->getSellerCampaignsWithHttpInfo($authorization, $seller_status, $seller_id, $campaign_id, $budget_status);
+        list($response) = $this->getSellerCampaignsWithHttpInfo($authorization, $seller_status, $seller_id, $campaign_id, $budget_status, $advertiser_id);
         return $response;
     }
 
@@ -4924,14 +4934,15 @@ class SellersV2Api
      * @param  string $seller_id Return only seller campaigns belonging to the given seller. (optional)
      * @param  int $campaign_id Return only seller campaigns associated with the given campaign. (optional)
      * @param  string $budget_status Return only seller campaigns whose budget has the given status. (optional)
+     * @param  int $advertiser_id Return only seller belonging to the specified advertiser (optional)
      *
      * @throws \Criteo\Marketing\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of \Criteo\Marketing\Model\SellerCampaignMessage[]|\Criteo\Marketing\Model\ErrorSource[], HTTP status code, HTTP response headers (array of strings)
      */
-    public function getSellerCampaignsWithHttpInfo($authorization, $seller_status = null, $seller_id = null, $campaign_id = null, $budget_status = null)
+    public function getSellerCampaignsWithHttpInfo($authorization, $seller_status = null, $seller_id = null, $campaign_id = null, $budget_status = null, $advertiser_id = null)
     {
-        $request = $this->getSellerCampaignsRequest($authorization, $seller_status, $seller_id, $campaign_id, $budget_status);
+        $request = $this->getSellerCampaignsRequest($authorization, $seller_status, $seller_id, $campaign_id, $budget_status, $advertiser_id);
 
         try {
             $options = $this->createHttpClientOption();
@@ -5036,13 +5047,14 @@ class SellersV2Api
      * @param  string $seller_id Return only seller campaigns belonging to the given seller. (optional)
      * @param  int $campaign_id Return only seller campaigns associated with the given campaign. (optional)
      * @param  string $budget_status Return only seller campaigns whose budget has the given status. (optional)
+     * @param  int $advertiser_id Return only seller belonging to the specified advertiser (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getSellerCampaignsAsync($authorization, $seller_status = null, $seller_id = null, $campaign_id = null, $budget_status = null)
+    public function getSellerCampaignsAsync($authorization, $seller_status = null, $seller_id = null, $campaign_id = null, $budget_status = null, $advertiser_id = null)
     {
-        return $this->getSellerCampaignsAsyncWithHttpInfo($authorization, $seller_status, $seller_id, $campaign_id, $budget_status)
+        return $this->getSellerCampaignsAsyncWithHttpInfo($authorization, $seller_status, $seller_id, $campaign_id, $budget_status, $advertiser_id)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -5060,14 +5072,15 @@ class SellersV2Api
      * @param  string $seller_id Return only seller campaigns belonging to the given seller. (optional)
      * @param  int $campaign_id Return only seller campaigns associated with the given campaign. (optional)
      * @param  string $budget_status Return only seller campaigns whose budget has the given status. (optional)
+     * @param  int $advertiser_id Return only seller belonging to the specified advertiser (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getSellerCampaignsAsyncWithHttpInfo($authorization, $seller_status = null, $seller_id = null, $campaign_id = null, $budget_status = null)
+    public function getSellerCampaignsAsyncWithHttpInfo($authorization, $seller_status = null, $seller_id = null, $campaign_id = null, $budget_status = null, $advertiser_id = null)
     {
         $returnType = '\Criteo\Marketing\Model\SellerCampaignMessage[]';
-        $request = $this->getSellerCampaignsRequest($authorization, $seller_status, $seller_id, $campaign_id, $budget_status);
+        $request = $this->getSellerCampaignsRequest($authorization, $seller_status, $seller_id, $campaign_id, $budget_status, $advertiser_id);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -5111,11 +5124,12 @@ class SellersV2Api
      * @param  string $seller_id Return only seller campaigns belonging to the given seller. (optional)
      * @param  int $campaign_id Return only seller campaigns associated with the given campaign. (optional)
      * @param  string $budget_status Return only seller campaigns whose budget has the given status. (optional)
+     * @param  int $advertiser_id Return only seller belonging to the specified advertiser (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getSellerCampaignsRequest($authorization, $seller_status = null, $seller_id = null, $campaign_id = null, $budget_status = null)
+    protected function getSellerCampaignsRequest($authorization, $seller_status = null, $seller_id = null, $campaign_id = null, $budget_status = null, $advertiser_id = null)
     {
         // verify the required parameter 'authorization' is set
         if ($authorization === null || (is_array($authorization) && count($authorization) === 0)) {
@@ -5146,6 +5160,10 @@ class SellersV2Api
         // query params
         if ($budget_status !== null) {
             $queryParams['budgetStatus'] = ObjectSerializer::toQueryValue($budget_status);
+        }
+        // query params
+        if ($advertiser_id !== null) {
+            $queryParams['advertiserId'] = ObjectSerializer::toQueryValue($advertiser_id);
         }
         // header params
         if ($authorization !== null) {
@@ -5863,14 +5881,16 @@ class SellersV2Api
      * @param  bool $with_products Return only sellers with or without products in catalog. (optional)
      * @param  string $with_budget_status Return only sellers with specific budget status. (optional)
      * @param  string $seller_name Return only sellers with the matching name. (optional)
+     * @param  int $advertiser_id Return only sellers belonging to the specified advertiser (optional)
+     * @param  int $campaign_id Return only sellers belonging to the specified campaign (optional)
      *
      * @throws \Criteo\Marketing\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return \Criteo\Marketing\Model\SellerBase[]|\Criteo\Marketing\Model\ErrorSource[]
      */
-    public function getSellers($authorization, $seller_status = null, $with_products = null, $with_budget_status = null, $seller_name = null)
+    public function getSellers($authorization, $seller_status = null, $with_products = null, $with_budget_status = null, $seller_name = null, $advertiser_id = null, $campaign_id = null)
     {
-        list($response) = $this->getSellersWithHttpInfo($authorization, $seller_status, $with_products, $with_budget_status, $seller_name);
+        list($response) = $this->getSellersWithHttpInfo($authorization, $seller_status, $with_products, $with_budget_status, $seller_name, $advertiser_id, $campaign_id);
         return $response;
     }
 
@@ -5884,14 +5904,16 @@ class SellersV2Api
      * @param  bool $with_products Return only sellers with or without products in catalog. (optional)
      * @param  string $with_budget_status Return only sellers with specific budget status. (optional)
      * @param  string $seller_name Return only sellers with the matching name. (optional)
+     * @param  int $advertiser_id Return only sellers belonging to the specified advertiser (optional)
+     * @param  int $campaign_id Return only sellers belonging to the specified campaign (optional)
      *
      * @throws \Criteo\Marketing\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of \Criteo\Marketing\Model\SellerBase[]|\Criteo\Marketing\Model\ErrorSource[], HTTP status code, HTTP response headers (array of strings)
      */
-    public function getSellersWithHttpInfo($authorization, $seller_status = null, $with_products = null, $with_budget_status = null, $seller_name = null)
+    public function getSellersWithHttpInfo($authorization, $seller_status = null, $with_products = null, $with_budget_status = null, $seller_name = null, $advertiser_id = null, $campaign_id = null)
     {
-        $request = $this->getSellersRequest($authorization, $seller_status, $with_products, $with_budget_status, $seller_name);
+        $request = $this->getSellersRequest($authorization, $seller_status, $with_products, $with_budget_status, $seller_name, $advertiser_id, $campaign_id);
 
         try {
             $options = $this->createHttpClientOption();
@@ -5996,13 +6018,15 @@ class SellersV2Api
      * @param  bool $with_products Return only sellers with or without products in catalog. (optional)
      * @param  string $with_budget_status Return only sellers with specific budget status. (optional)
      * @param  string $seller_name Return only sellers with the matching name. (optional)
+     * @param  int $advertiser_id Return only sellers belonging to the specified advertiser (optional)
+     * @param  int $campaign_id Return only sellers belonging to the specified campaign (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getSellersAsync($authorization, $seller_status = null, $with_products = null, $with_budget_status = null, $seller_name = null)
+    public function getSellersAsync($authorization, $seller_status = null, $with_products = null, $with_budget_status = null, $seller_name = null, $advertiser_id = null, $campaign_id = null)
     {
-        return $this->getSellersAsyncWithHttpInfo($authorization, $seller_status, $with_products, $with_budget_status, $seller_name)
+        return $this->getSellersAsyncWithHttpInfo($authorization, $seller_status, $with_products, $with_budget_status, $seller_name, $advertiser_id, $campaign_id)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -6020,14 +6044,16 @@ class SellersV2Api
      * @param  bool $with_products Return only sellers with or without products in catalog. (optional)
      * @param  string $with_budget_status Return only sellers with specific budget status. (optional)
      * @param  string $seller_name Return only sellers with the matching name. (optional)
+     * @param  int $advertiser_id Return only sellers belonging to the specified advertiser (optional)
+     * @param  int $campaign_id Return only sellers belonging to the specified campaign (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function getSellersAsyncWithHttpInfo($authorization, $seller_status = null, $with_products = null, $with_budget_status = null, $seller_name = null)
+    public function getSellersAsyncWithHttpInfo($authorization, $seller_status = null, $with_products = null, $with_budget_status = null, $seller_name = null, $advertiser_id = null, $campaign_id = null)
     {
         $returnType = '\Criteo\Marketing\Model\SellerBase[]';
-        $request = $this->getSellersRequest($authorization, $seller_status, $with_products, $with_budget_status, $seller_name);
+        $request = $this->getSellersRequest($authorization, $seller_status, $with_products, $with_budget_status, $seller_name, $advertiser_id, $campaign_id);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -6071,11 +6097,13 @@ class SellersV2Api
      * @param  bool $with_products Return only sellers with or without products in catalog. (optional)
      * @param  string $with_budget_status Return only sellers with specific budget status. (optional)
      * @param  string $seller_name Return only sellers with the matching name. (optional)
+     * @param  int $advertiser_id Return only sellers belonging to the specified advertiser (optional)
+     * @param  int $campaign_id Return only sellers belonging to the specified campaign (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function getSellersRequest($authorization, $seller_status = null, $with_products = null, $with_budget_status = null, $seller_name = null)
+    protected function getSellersRequest($authorization, $seller_status = null, $with_products = null, $with_budget_status = null, $seller_name = null, $advertiser_id = null, $campaign_id = null)
     {
         // verify the required parameter 'authorization' is set
         if ($authorization === null || (is_array($authorization) && count($authorization) === 0)) {
@@ -6106,6 +6134,14 @@ class SellersV2Api
         // query params
         if ($seller_name !== null) {
             $queryParams['sellerName'] = ObjectSerializer::toQueryValue($seller_name);
+        }
+        // query params
+        if ($advertiser_id !== null) {
+            $queryParams['advertiserId'] = ObjectSerializer::toQueryValue($advertiser_id);
+        }
+        // query params
+        if ($campaign_id !== null) {
+            $queryParams['campaignId'] = ObjectSerializer::toQueryValue($campaign_id);
         }
         // header params
         if ($authorization !== null) {

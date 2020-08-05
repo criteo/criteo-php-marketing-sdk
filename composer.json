@@ -1,6 +1,6 @@
 {
     "name": "criteo/criteo-php-marketing-sdk",
-    "version": "1.0.30",
+    "version": "1.0.31",
     "description": "Official Criteo PHP Marketing SDK",
     "keywords": [
         "criteo",

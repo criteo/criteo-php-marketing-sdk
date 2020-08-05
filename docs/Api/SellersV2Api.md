@@ -9,13 +9,13 @@ Method | HTTP request | Description
 [**createSellers**](SellersV2Api.md#createSellers) | **POST** /v2/crp/advertisers/{advertiserId}/sellers | Create new sellers for an advertiser
 [**getAdvertiser**](SellersV2Api.md#getAdvertiser) | **GET** /v2/crp/advertisers/{advertiserId} | Get an advertiser.
 [**getAdvertiserCampaigns**](SellersV2Api.md#getAdvertiserCampaigns) | **GET** /v2/crp/advertisers/{advertiserId}/campaigns | Get the collection of CRP campaigns associated with the advertiserId.
-[**getAdvertiserPreviewLimits**](SellersV2Api.md#getAdvertiserPreviewLimits) | **GET** /v2/crp/advertisers/preview-limit | Get the collection of advertisers preview limits associated with the user.
+[**getAdvertiserPreviewLimits**](SellersV2Api.md#getAdvertiserPreviewLimits) | **GET** /v2/crp/advertisers/preview-limit | Get the collection of advertisers preview limits associated with the authorized user.
 [**getAdvertisers**](SellersV2Api.md#getAdvertisers) | **GET** /v2/crp/advertisers | Get the collection of advertisers associated with the user.
 [**getBudgetsByAdvertiser**](SellersV2Api.md#getBudgetsByAdvertiser) | **GET** /v2/crp/advertisers/{advertiserId}/budgets | Get CRP budgets for a specific advertiser
 [**getBudgetsBySeller**](SellersV2Api.md#getBudgetsBySeller) | **GET** /v2/crp/sellers/{sellerId}/budgets | Get a collection of budgets for this seller.
 [**getBudgetsBySellerCampaignId**](SellersV2Api.md#getBudgetsBySellerCampaignId) | **GET** /v2/crp/seller-campaigns/{sellerCampaignId}/budgets | Get a collection of budgets for this seller campaign.
 [**getSeller**](SellersV2Api.md#getSeller) | **GET** /v2/crp/sellers/{sellerId} | Get details for a seller.
-[**getSellerAdDemo**](SellersV2Api.md#getSellerAdDemo) | **GET** /v2/crp/advertisers/{advertiserId}/ad-preview | Get a demo ad with products from the given seller
+[**getSellerAdDemo**](SellersV2Api.md#getSellerAdDemo) | **GET** /v2/crp/advertisers/{advertiserId}/ad-preview | Get a preview of an HTML ad with products belonging to the provided seller
 [**getSellerBudget**](SellersV2Api.md#getSellerBudget) | **GET** /v2/crp/budgets/{budgetId} | Get details for a budget.
 [**getSellerBudgets**](SellersV2Api.md#getSellerBudgets) | **GET** /v2/crp/budgets | Get a collection of budgets.
 [**getSellerCampaign**](SellersV2Api.md#getSellerCampaign) | **GET** /v2/crp/seller-campaigns/{sellerCampaignId} | Get details for a seller campaign.
@@ -359,7 +359,7 @@ Name | Type | Description  | Notes
 
 > \Criteo\Marketing\Model\AdvertiserQuotaMessage[] getAdvertiserPreviewLimits($authorization)
 
-Get the collection of advertisers preview limits associated with the user.
+Get the collection of advertisers preview limits associated with the authorized user.
 
 ### Example
 
@@ -781,7 +781,9 @@ Name | Type | Description  | Notes
 
 > string getSellerAdDemo($advertiser_id, $seller_id, $authorization, $campaign_id, $height, $width)
 
-Get a demo ad with products from the given seller
+Get a preview of an HTML ad with products belonging to the provided seller
+
+• <b>advertiserId</b>: Valid crp advertiserId, seller belongs to provided advertiser<br />  • <b>sellerId</b>: Products from given SellerId will fill the ad preview, must be existing crp sellerId<br />  • <b>campaignId</b>: CampaignId may be supplied if there is a specific design set configured for the provided campaign, Seller-Campaign must be valid in crp<br />  • <b>height</b>: height may be supplied to request a specific ad preview height<br />  • <b>width</b>: width may be supplied to request a specific ad preview width<br />                Ad preview api calls are capped to 1000 per day per advertiser by default.  Current usage, limit, and period can be found using v2/crp/advertisers/preview-limit
 
 ### Example
 
@@ -915,7 +917,7 @@ Name | Type | Description  | Notes
 
 ## getSellerBudgets
 
-> \Criteo\Marketing\Model\SellerBudgetMessage[] getSellerBudgets($authorization, $status, $with_balance, $with_spend, $end_after_date, $start_before_date, $campaign_id, $seller_id, $type)
+> \Criteo\Marketing\Model\SellerBudgetMessage[] getSellerBudgets($authorization, $status, $with_balance, $with_spend, $end_after_date, $start_before_date, $campaign_id, $seller_id, $type, $advertiser_id)
 
 Get a collection of budgets.
 
@@ -949,9 +951,10 @@ $start_before_date = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | 
 $campaign_id = 56; // int | Return only budgets that pay for a given campaign.
 $seller_id = 'seller_id_example'; // string | Return only budgets belonging to the given seller.
 $type = 'type_example'; // string | Return only budgets with the given budget type.
+$advertiser_id = 56; // int | Return only budgets belonging to the specified advertiser
 
 try {
-    $result = $apiInstance->getSellerBudgets($authorization, $status, $with_balance, $with_spend, $end_after_date, $start_before_date, $campaign_id, $seller_id, $type);
+    $result = $apiInstance->getSellerBudgets($authorization, $status, $with_balance, $with_spend, $end_after_date, $start_before_date, $campaign_id, $seller_id, $type, $advertiser_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling SellersV2Api->getSellerBudgets: ', $e->getMessage(), PHP_EOL;
@@ -973,6 +976,7 @@ Name | Type | Description  | Notes
  **campaign_id** | **int**| Return only budgets that pay for a given campaign. | [optional]
  **seller_id** | **string**| Return only budgets belonging to the given seller. | [optional]
  **type** | **string**| Return only budgets with the given budget type. | [optional]
+ **advertiser_id** | **int**| Return only budgets belonging to the specified advertiser | [optional]
 
 ### Return type
 
@@ -1059,7 +1063,7 @@ Name | Type | Description  | Notes
 
 ## getSellerCampaigns
 
-> \Criteo\Marketing\Model\SellerCampaignMessage[] getSellerCampaigns($authorization, $seller_status, $seller_id, $campaign_id, $budget_status)
+> \Criteo\Marketing\Model\SellerCampaignMessage[] getSellerCampaigns($authorization, $seller_status, $seller_id, $campaign_id, $budget_status, $advertiser_id)
 
 Get a collection of seller campaigns.
 
@@ -1089,9 +1093,10 @@ $seller_status = 'seller_status_example'; // string | Return only seller campaig
 $seller_id = 'seller_id_example'; // string | Return only seller campaigns belonging to the given seller.
 $campaign_id = 56; // int | Return only seller campaigns associated with the given campaign.
 $budget_status = 'budget_status_example'; // string | Return only seller campaigns whose budget has the given status.
+$advertiser_id = 56; // int | Return only seller belonging to the specified advertiser
 
 try {
-    $result = $apiInstance->getSellerCampaigns($authorization, $seller_status, $seller_id, $campaign_id, $budget_status);
+    $result = $apiInstance->getSellerCampaigns($authorization, $seller_status, $seller_id, $campaign_id, $budget_status, $advertiser_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling SellersV2Api->getSellerCampaigns: ', $e->getMessage(), PHP_EOL;
@@ -1109,6 +1114,7 @@ Name | Type | Description  | Notes
  **seller_id** | **string**| Return only seller campaigns belonging to the given seller. | [optional]
  **campaign_id** | **int**| Return only seller campaigns associated with the given campaign. | [optional]
  **budget_status** | **string**| Return only seller campaigns whose budget has the given status. | [optional]
+ **advertiser_id** | **int**| Return only seller belonging to the specified advertiser | [optional]
 
 ### Return type
 
@@ -1264,7 +1270,7 @@ Name | Type | Description  | Notes
 
 ## getSellers
 
-> \Criteo\Marketing\Model\SellerBase[] getSellers($authorization, $seller_status, $with_products, $with_budget_status, $seller_name)
+> \Criteo\Marketing\Model\SellerBase[] getSellers($authorization, $seller_status, $with_products, $with_budget_status, $seller_name, $advertiser_id, $campaign_id)
 
 Get a collection of sellers.
 
@@ -1294,9 +1300,11 @@ $seller_status = 'seller_status_example'; // string | Return only sellers with s
 $with_products = True; // bool | Return only sellers with or without products in catalog.
 $with_budget_status = 'with_budget_status_example'; // string | Return only sellers with specific budget status.
 $seller_name = 'seller_name_example'; // string | Return only sellers with the matching name.
+$advertiser_id = 56; // int | Return only sellers belonging to the specified advertiser
+$campaign_id = 56; // int | Return only sellers belonging to the specified campaign
 
 try {
-    $result = $apiInstance->getSellers($authorization, $seller_status, $with_products, $with_budget_status, $seller_name);
+    $result = $apiInstance->getSellers($authorization, $seller_status, $with_products, $with_budget_status, $seller_name, $advertiser_id, $campaign_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling SellersV2Api->getSellers: ', $e->getMessage(), PHP_EOL;
@@ -1314,6 +1322,8 @@ Name | Type | Description  | Notes
  **with_products** | **bool**| Return only sellers with or without products in catalog. | [optional]
  **with_budget_status** | **string**| Return only sellers with specific budget status. | [optional]
  **seller_name** | **string**| Return only sellers with the matching name. | [optional]
+ **advertiser_id** | **int**| Return only sellers belonging to the specified advertiser | [optional]
+ **campaign_id** | **int**| Return only sellers belonging to the specified campaign | [optional]
 
 ### Return type
 
