@@ -127,14 +127,15 @@ class SellersV2StatsApi
      * @param  \DateTime $end_date Filter out all events that occur after date (default is today’s date) (optional)
      * @param  string $campaign_id Show only metrics for this campaign (default all campaigns) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \Criteo\Marketing\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return string
      */
-    public function campaigns($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $campaign_id = null, $count = null)
+    public function campaigns($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $campaign_id = null, $count = null, $advertiser_id = null)
     {
-        list($response) = $this->campaignsWithHttpInfo($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $campaign_id, $count);
+        list($response) = $this->campaignsWithHttpInfo($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $campaign_id, $count, $advertiser_id);
         return $response;
     }
 
@@ -150,14 +151,15 @@ class SellersV2StatsApi
      * @param  \DateTime $end_date Filter out all events that occur after date (default is today’s date) (optional)
      * @param  string $campaign_id Show only metrics for this campaign (default all campaigns) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \Criteo\Marketing\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of string, HTTP status code, HTTP response headers (array of strings)
      */
-    public function campaignsWithHttpInfo($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $campaign_id = null, $count = null)
+    public function campaignsWithHttpInfo($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $campaign_id = null, $count = null, $advertiser_id = null)
     {
-        $request = $this->campaignsRequest($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $campaign_id, $count);
+        $request = $this->campaignsRequest($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $campaign_id, $count, $advertiser_id);
 
         try {
             $options = $this->createHttpClientOption();
@@ -244,13 +246,14 @@ class SellersV2StatsApi
      * @param  \DateTime $end_date Filter out all events that occur after date (default is today’s date) (optional)
      * @param  string $campaign_id Show only metrics for this campaign (default all campaigns) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function campaignsAsync($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $campaign_id = null, $count = null)
+    public function campaignsAsync($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $campaign_id = null, $count = null, $advertiser_id = null)
     {
-        return $this->campaignsAsyncWithHttpInfo($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $campaign_id, $count)
+        return $this->campaignsAsyncWithHttpInfo($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $campaign_id, $count, $advertiser_id)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -270,14 +273,15 @@ class SellersV2StatsApi
      * @param  \DateTime $end_date Filter out all events that occur after date (default is today’s date) (optional)
      * @param  string $campaign_id Show only metrics for this campaign (default all campaigns) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function campaignsAsyncWithHttpInfo($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $campaign_id = null, $count = null)
+    public function campaignsAsyncWithHttpInfo($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $campaign_id = null, $count = null, $advertiser_id = null)
     {
         $returnType = 'string';
-        $request = $this->campaignsRequest($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $campaign_id, $count);
+        $request = $this->campaignsRequest($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $campaign_id, $count, $advertiser_id);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -323,11 +327,12 @@ class SellersV2StatsApi
      * @param  \DateTime $end_date Filter out all events that occur after date (default is today’s date) (optional)
      * @param  string $campaign_id Show only metrics for this campaign (default all campaigns) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function campaignsRequest($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $campaign_id = null, $count = null)
+    protected function campaignsRequest($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $campaign_id = null, $count = null, $advertiser_id = null)
     {
         // verify the required parameter 'authorization' is set
         if ($authorization === null || (is_array($authorization) && count($authorization) === 0)) {
@@ -366,6 +371,10 @@ class SellersV2StatsApi
         // query params
         if ($count !== null) {
             $queryParams['count'] = ObjectSerializer::toQueryValue($count);
+        }
+        // query params
+        if ($advertiser_id !== null) {
+            $queryParams['advertiserId'] = ObjectSerializer::toQueryValue($advertiser_id);
         }
         // header params
         if ($authorization !== null) {
@@ -455,14 +464,15 @@ class SellersV2StatsApi
      * @param  string $seller_id Show only metrics for this seller (default all sellers) (optional)
      * @param  string $campaign_id Show only metrics for this campaign (default all campaigns) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \Criteo\Marketing\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return string
      */
-    public function sellerCampaigns($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $campaign_id = null, $count = null)
+    public function sellerCampaigns($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $campaign_id = null, $count = null, $advertiser_id = null)
     {
-        list($response) = $this->sellerCampaignsWithHttpInfo($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $campaign_id, $count);
+        list($response) = $this->sellerCampaignsWithHttpInfo($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $campaign_id, $count, $advertiser_id);
         return $response;
     }
 
@@ -479,14 +489,15 @@ class SellersV2StatsApi
      * @param  string $seller_id Show only metrics for this seller (default all sellers) (optional)
      * @param  string $campaign_id Show only metrics for this campaign (default all campaigns) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \Criteo\Marketing\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of string, HTTP status code, HTTP response headers (array of strings)
      */
-    public function sellerCampaignsWithHttpInfo($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $campaign_id = null, $count = null)
+    public function sellerCampaignsWithHttpInfo($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $campaign_id = null, $count = null, $advertiser_id = null)
     {
-        $request = $this->sellerCampaignsRequest($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $campaign_id, $count);
+        $request = $this->sellerCampaignsRequest($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $campaign_id, $count, $advertiser_id);
 
         try {
             $options = $this->createHttpClientOption();
@@ -574,13 +585,14 @@ class SellersV2StatsApi
      * @param  string $seller_id Show only metrics for this seller (default all sellers) (optional)
      * @param  string $campaign_id Show only metrics for this campaign (default all campaigns) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function sellerCampaignsAsync($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $campaign_id = null, $count = null)
+    public function sellerCampaignsAsync($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $campaign_id = null, $count = null, $advertiser_id = null)
     {
-        return $this->sellerCampaignsAsyncWithHttpInfo($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $campaign_id, $count)
+        return $this->sellerCampaignsAsyncWithHttpInfo($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $campaign_id, $count, $advertiser_id)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -601,14 +613,15 @@ class SellersV2StatsApi
      * @param  string $seller_id Show only metrics for this seller (default all sellers) (optional)
      * @param  string $campaign_id Show only metrics for this campaign (default all campaigns) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function sellerCampaignsAsyncWithHttpInfo($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $campaign_id = null, $count = null)
+    public function sellerCampaignsAsyncWithHttpInfo($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $campaign_id = null, $count = null, $advertiser_id = null)
     {
         $returnType = 'string';
-        $request = $this->sellerCampaignsRequest($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $campaign_id, $count);
+        $request = $this->sellerCampaignsRequest($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $campaign_id, $count, $advertiser_id);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -655,11 +668,12 @@ class SellersV2StatsApi
      * @param  string $seller_id Show only metrics for this seller (default all sellers) (optional)
      * @param  string $campaign_id Show only metrics for this campaign (default all campaigns) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function sellerCampaignsRequest($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $campaign_id = null, $count = null)
+    protected function sellerCampaignsRequest($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $campaign_id = null, $count = null, $advertiser_id = null)
     {
         // verify the required parameter 'authorization' is set
         if ($authorization === null || (is_array($authorization) && count($authorization) === 0)) {
@@ -702,6 +716,10 @@ class SellersV2StatsApi
         // query params
         if ($count !== null) {
             $queryParams['count'] = ObjectSerializer::toQueryValue($count);
+        }
+        // query params
+        if ($advertiser_id !== null) {
+            $queryParams['advertiserId'] = ObjectSerializer::toQueryValue($advertiser_id);
         }
         // header params
         if ($authorization !== null) {
@@ -790,14 +808,15 @@ class SellersV2StatsApi
      * @param  \DateTime $end_date Filter out all events that occur after date (default is today’s date) (optional)
      * @param  string $seller_id Show only metrics for this seller (default all sellers) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \Criteo\Marketing\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return string
      */
-    public function sellers($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $count = null)
+    public function sellers($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $count = null, $advertiser_id = null)
     {
-        list($response) = $this->sellersWithHttpInfo($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $count);
+        list($response) = $this->sellersWithHttpInfo($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $count, $advertiser_id);
         return $response;
     }
 
@@ -813,14 +832,15 @@ class SellersV2StatsApi
      * @param  \DateTime $end_date Filter out all events that occur after date (default is today’s date) (optional)
      * @param  string $seller_id Show only metrics for this seller (default all sellers) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \Criteo\Marketing\ApiException on non-2xx response
      * @throws \InvalidArgumentException
      * @return array of string, HTTP status code, HTTP response headers (array of strings)
      */
-    public function sellersWithHttpInfo($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $count = null)
+    public function sellersWithHttpInfo($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $count = null, $advertiser_id = null)
     {
-        $request = $this->sellersRequest($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $count);
+        $request = $this->sellersRequest($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $count, $advertiser_id);
 
         try {
             $options = $this->createHttpClientOption();
@@ -907,13 +927,14 @@ class SellersV2StatsApi
      * @param  \DateTime $end_date Filter out all events that occur after date (default is today’s date) (optional)
      * @param  string $seller_id Show only metrics for this seller (default all sellers) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function sellersAsync($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $count = null)
+    public function sellersAsync($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $count = null, $advertiser_id = null)
     {
-        return $this->sellersAsyncWithHttpInfo($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $count)
+        return $this->sellersAsyncWithHttpInfo($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $count, $advertiser_id)
             ->then(
                 function ($response) {
                     return $response[0];
@@ -933,14 +954,15 @@ class SellersV2StatsApi
      * @param  \DateTime $end_date Filter out all events that occur after date (default is today’s date) (optional)
      * @param  string $seller_id Show only metrics for this seller (default all sellers) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Promise\PromiseInterface
      */
-    public function sellersAsyncWithHttpInfo($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $count = null)
+    public function sellersAsyncWithHttpInfo($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $count = null, $advertiser_id = null)
     {
         $returnType = 'string';
-        $request = $this->sellersRequest($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $count);
+        $request = $this->sellersRequest($authorization, $interval_size, $click_attribution_policy, $start_date, $end_date, $seller_id, $count, $advertiser_id);
 
         return $this->client
             ->sendAsync($request, $this->createHttpClientOption())
@@ -986,11 +1008,12 @@ class SellersV2StatsApi
      * @param  \DateTime $end_date Filter out all events that occur after date (default is today’s date) (optional)
      * @param  string $seller_id Show only metrics for this seller (default all sellers) (optional)
      * @param  int $count Return up to the first count rows of data (default is all rows) (optional)
+     * @param  int $advertiser_id Show only metrics for this advertiser. (optional)
      *
      * @throws \InvalidArgumentException
      * @return \GuzzleHttp\Psr7\Request
      */
-    protected function sellersRequest($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $count = null)
+    protected function sellersRequest($authorization, $interval_size = null, $click_attribution_policy = null, $start_date = null, $end_date = null, $seller_id = null, $count = null, $advertiser_id = null)
     {
         // verify the required parameter 'authorization' is set
         if ($authorization === null || (is_array($authorization) && count($authorization) === 0)) {
@@ -1029,6 +1052,10 @@ class SellersV2StatsApi
         // query params
         if ($count !== null) {
             $queryParams['count'] = ObjectSerializer::toQueryValue($count);
+        }
+        // query params
+        if ($advertiser_id !== null) {
+            $queryParams['advertiserId'] = ObjectSerializer::toQueryValue($advertiser_id);
         }
         // header params
         if ($authorization !== null) {
