@@ -1,3 +1,8 @@
+# This project is deprecated
+We've built a new set of SDKs to help you use our [Criteo's API](https://developers.criteo.com/).
+
+You can find the new PHP SDKs repository here : https://github.com/criteo/criteo-api-php-sdk
+
 # Criteo Marketing SDK for PHP
 
 [![Build Status](https://travis-ci.com/criteo/criteo-php-marketing-sdk.svg?branch=master)](https://travis-ci.com/criteo/criteo-php-marketing-sdk)
